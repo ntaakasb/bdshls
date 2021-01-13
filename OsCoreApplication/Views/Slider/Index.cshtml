@@ -1,0 +1,31 @@
+﻿@model IEnumerable<OsCoreApplication.ViewModel.Models.BannerModels>
+@{
+    Layout = null;
+    string s = "";
+    bool k = true;
+    foreach (var item in Model)
+    {
+        if (k)
+        {
+            s = item.ImageUrl;
+            k = false;
+        }
+    }
+}
+    <section class="banner" id="top" style="background-image: url(@s);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="banner-caption">
+                        <div class="line-dec"></div>
+                        <h2>BĐS HOÀNG LIÊN SƠN, 
+                        <br />
+                        một chữ Tín - vạn niềm Tin.</h2>
+                        <div class="blue-button">
+                            <a href="/lien-he">Liên hệ ngay</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

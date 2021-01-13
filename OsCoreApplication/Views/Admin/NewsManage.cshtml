@@ -1,0 +1,142 @@
+﻿@using OsCoreApplication.ViewModel.Models
+@model IEnumerable<OsCoreApplication.ViewModel.Models.NewsModels>
+@{
+    ViewBag.Title = "NewManage";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Paging paging = ViewBag.Paging as Paging;
+}
+
+<div class="ui form">
+    <div class="content-wrapper">
+        <div class="content box">
+            <div class="ui small breadcrumb tops">
+                <a href="/"><i class="large home teal icon"></i></a>
+                <i class="right chevron icon divider"></i>
+                <div class="active section">Quản lý tin tức</div>
+            </div>
+            <div class="box-body">
+                <div class="field" style="text-align:right">
+                    <a id="btnAddNews" href="/Admin/AddNews" class="ui primary labeled icon button"><i class="plus icon"></i> Thêm Mới Tin Tức </a>
+                </div>
+                <div style='overflow: auto; margin-bottom: 12px;'>
+                    <table class='ui selectable celled table'>
+                        <thead>
+                            <tr>
+                                <th style='text-align: center; width: 50px'>
+                                    STT
+                                </th>
+                                <th style="width:120px">
+                                    HÌNH ẢNH
+                                </th>
+                                <th style="width:40%">
+                                    TIÊU ĐỀ
+                                </th>
+                                <th>
+                                    NGÀY ĐĂNG
+                                </th>
+                                <th>
+                                    THỂ LOẠI
+                                </th>
+                                <th class='two wide'>
+                                    CHỨC NĂNG
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count() > 0 && Model.Any())
+                            {
+                                int i = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td style="text-align:center">@i</td>
+                                        <td style="text-align:center;"><img src="@item.Thumb" style="width:100px; height:auto" /></td>
+                                        <td>@item.NewsTitle</td>
+                                        <td>@item.DateCreated</td>
+                                        <td>@item.NewsCategoryName</td>
+                                        <td style="text-align:center">
+                                            <a href="../Admin/EditNews?NewsID=@item.id" class="ui mini green button">Sửa</a>
+                                            <a data-id="@item.id" class="ui mini red button del-news">Xóa</a>
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="text-align: center;">
+                    @{Html.RenderAction("Index", "Paging", new { p = paging }); }
+                </div>          
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Popup Delete News-->
+    <div class="ui tiny modal" id="popupDelNews">
+        <div class="header">Xác nhận xóa tin tức</div>
+        <div class="content">
+            <p>
+                Bạn có chắc chắn xóa tin tức này không?
+            </p>
+        </div>
+        <div class="actions">
+            <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Không</a>
+            <a class='waves-effect waves-light ui green right labeled icon button' id="btnExeDelNews"><i class='checkmark icon'></i>Xóa</a>
+        </div>
+    </div>
+
+
+
+    <script>
+     
+        $(".del-news").on("click", function () {
+            $('#btnExeDelNews').attr('data-id', $(this).attr("data-id"));
+            ShowModal("#popupDelNews");
+        })
+
+        $("#btnExeDelNews").on("click", function (e) {
+            var _id = $(this).attr("data-id");
+
+            var newsID = {
+                id: _id
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/Admin/DeleteNews',
+                dataType: 'json',
+                cache: false,
+                data: newsID,
+                success: function (data) {
+                    if (data.rel == 1) {
+                        location.reload();
+                    }
+                    else {
+                        alert("Xóa có lỗi.")
+                    }
+                },
+                error: function () {
+                    alert("Không thể xóa.");
+                }
+            });
+
+        })
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+</div>
+

@@ -1,0 +1,18 @@
+﻿@model IEnumerable<OsCoreApplication.ViewModel.Models.ConfigWebModels>
+@{
+    Layout = null;
+    string phone = Model.FirstOrDefault(o => o.KeyConfig == "CONTACT_INFO_PHONE").ValueConfig;
+}
+    <div id="post-wrap" class="content-section fullpage-wrap">
+        <div id="share">
+            <a href="tel:@phone.Replace(" ","").Replace("-","")" class="share-btn">
+                <i class="icon ion-android-call"></i>
+            </a>
+            <a href="http://zalo.me/0968101090">
+               <img src="https://hotro.weba.vn/shop/images/hotro/Kho-ung-dung/Zalo-chat-tructuyen/Zalo.png"  style="width: 60px; height: auto;" />
+            </a>
+            <a href="http://m.me/100006513375030" >
+             <img src="https://image.flaticon.com/icons/svg/1532/1532532.svg" style="width: 60px; height: auto;" />
+            </a>
+        </div>
+    </div>

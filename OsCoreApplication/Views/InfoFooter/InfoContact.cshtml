@@ -1,0 +1,27 @@
+﻿@model IEnumerable<OsCoreApplication.ViewModel.Models.ConfigWebModels>
+@{
+    Layout = null;
+
+    string phone = Model.FirstOrDefault(o => o.KeyConfig == "CONTACT_INFO_PHONE").ValueConfig;
+    string mail = Model.FirstOrDefault(o => o.KeyConfig == "CONTACT_INFO_MAIL").ValueConfig;
+    string time1 = Model.FirstOrDefault(o => o.KeyConfig == "CONTACT_TIMEWORK1").ValueConfig;
+    string time2 = Model.FirstOrDefault(o => o.KeyConfig == "CONTACT_TIMEWORK2").ValueConfig;
+    string address = Model.FirstOrDefault(o => o.KeyConfig == "CONTACT_ADDRESS").ValueConfig;
+}
+
+<p>
+    <span class="contact-info">
+        Địa chỉ: <em>
+           @address
+        </em>
+    </span>
+    <br>
+    <span class="contact-info">
+        Điện thoại: <em>@phone</em>
+    </span>
+    <br>
+    <span class="contact-info">
+        Email <a href="#"><em>@mail</em></a>
+    </span>
+</p>
+

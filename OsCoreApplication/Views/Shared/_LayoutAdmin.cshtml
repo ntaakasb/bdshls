@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Admin Website BĐS Hoàng Liên Sơn</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="~/Css/style.css" />
+    <link rel="stylesheet" href="~/PlugIn/AdminLTE/css/AdminLTE.min.css" />
+    <link rel="stylesheet" href="~/PlugIn/AdminLTE/css/skins/skin-blue.min.css" />
+    <script src="~/PlugIn/jQuery/jQuery-2.2.0.min.js"></script>
+    <link href="~/PlugIn/Semantic/semantic.min.css" rel="stylesheet" />
+    <script src="~/PlugIn/Semantic/semantic.min.js"></script>
+    <script src="~/js/Main.js"></script>
+    <script src="~/PlugIn/AdminLTE/js/app.js"></script>
+    <script src="~/css/notify.min.js"></script>
+
+</head>
+
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+
+    <div class="wrapper">
+        <header id="dvHeader" class="main-header">
+            <a href="~/Admin/Login" class="logo">
+                <span class="logo-mini">
+                    <img src="~/images/logo.png" style="width: 50px; margin-top: -1px;" />
+                </span>
+                <span class="logo-lg" style="font-size: 31px;">
+                    <img src="~/images/logo.png" style="width: 100px; margin-top: -1px;" />
+                </span>
+            </a>
+            <nav class="navbar navbar-static-top" role="navigation">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <i class="outdent icon"></i>  <span class="titlecongty">QUẢN LÝ WEBSITE BĐS HOÀNG LIÊN SƠN</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        @*<li class="user user-menu">
+                            <div class="ui icon top left pointing dropdown" id="divKhachHang" runat="server" style="margin-top: 15px; margin-right:15px; font-weight:bold; color:white">
+                                <img src="~/images/UserDefult.jpg" class="user-image" alt="User Image" />
+                                <div class="menu" id="divThongTin" runat="server">
+                                </div>
+                            </div>
+                        </li>*@
+
+                        <li class="user user-menu">
+                            <a href="@Url.Action("Logout","Admin")" class="ui icon top left pointing dropdown" style="margin-top: 11px;">
+                                <i class="circular inverted green sign out icon" style="color: white"></i>                              
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <section id="dvMenu" class="sidebar" runat="server">
+                <ul class="sidebar-menu">
+                    <li id="dvWebConfig" class="treeview">
+                        <a class="waves-effect waves-light" href="/Admin/WebConfig">
+                            <i class="cogs icon"></i> <span>TÙY CHỈNH WEBSITE</span>
+                        </a>
+                    </li>
+
+                    <li id="dvBannerManage" class="treeview">
+                        <a class="waves-effect waves-light" href="/Admin/BannerManage">
+                            <i class="image outline icon"></i> <span>QUẢN LÝ BANNER</span>
+                        </a>
+                    </li>
+
+                    <li id="dvProjectManage" class="treeview">
+                        <a class="waves-effect waves-light" href="/Admin/ProjectManage">
+                            <i class="folder open icon"></i> <span>QUẢN LÝ DỰ ÁN</span>
+                        </a>
+                    </li>
+
+                    @*<li id="dvNewsCategoryManage" class="treeview">
+            <a class="waves-effect waves-light" href="/Admin/NewsCategoryManage">
+                <i class="rss icon"></i> <span>QUẢN LÝ LOẠI TIN TỨC</span>
+            </a>
+        </li>*@
+
+                    <li id="dvNewsManage" class="treeview">
+                        <a class="waves-effect waves-light" href="/Admin/NewsManage">
+                            <i class="rss icon"></i> <span>QUẢN LÝ TIN TỨC</span>
+                        </a>
+                    </li>
+
+                    <li id="dvNewsManage" class="treeview">
+                        <a class="waves-effect waves-light" href="/Admin/ImportImages">
+                            <i class="cloud upload icon"></i> <span>IMPORT HÌNH ẢNH</span>
+                        </a>
+                    </li>
+
+
+                    <li id="dvContactManage" class="treeview">
+                        <a class="waves-effect waves-light" href="/Admin/ContactManage">
+                            <i class="envelope outline icon"></i> <span>DANH SÁCH LIÊN HỆ</span>
+                        </a>
+                    </li>
+
+
+                </ul>
+
+            </section>
+        </aside>
+
+        <div>
+            @RenderBody()
+        </div>
+
+    </div>
+
+
+
+
+    <!--Popup cập nhật chủ hàng-->
+    <div class="ui tiny modal" id="divDoiMatKhau">
+        <div class="header">Đổi mật khẩu đăng nhập</div>
+        <div class="content">
+            <div class="ui form">
+
+                <div class="field">
+                    <label>Mật khẩu cũ: (*)</label>
+                    <input placeholder="Nhập mật khẩu cũ..." type="text" id="txt_MatKhauCu" />
+                </div>
+
+
+
+
+                <div class="field">
+                    <label>Mật khẩu mới: (*)</label>
+                    <input placeholder="Nhập mật khẩu mới..." type="text" id="txt_MatKhauMoi" />
+                </div>
+                <div class="field">
+                    <label>Nhập lại mật khẩu mới: (*)</label>
+                    <input placeholder="Nhập lại mật khẩu mới... " type="text" id="txt_NhapLaiMKMoi" />
+                </div>
+
+            </div>
+        </div>
+
+        <div class="actions">
+            <a class='waves-effect waves-light negative ui cancel right labeled icon button'> <i class='remove icon'> </i> Đóng </a>
+            <a id='btThemChuHang' class='waves-effect waves-light ui green right labeled icon button'> <i class='checkmark icon'> </i> Đổi mật khẩu </a>
+        </div>
+    </div>
+
+    
+</body>
+</html>

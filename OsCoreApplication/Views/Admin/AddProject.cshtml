@@ -1,0 +1,409 @@
+﻿
+@{
+    ViewBag.Title = "AddProject";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+    <div class="ui form">
+        <div class="content-wrapper">
+            <div class="content box">
+                <div class="ui small breadcrumb tops">
+                    <a href="/"><i class="large home teal icon"></i></a>
+                    <i class="right chevron icon divider"></i>
+                    <div class="active section">Quản lý dự án</div>
+                    <i class="right chevron icon divider"></i>
+                    <div class="active section">Thêm mới</div>
+                </div>
+                <div class="box-body">
+                    <div class="field">
+                        <label>Tên dự án: </label>
+                        <input type="text" id="ProjectName" name="ProjectName" placeholder="VD: ĐẤT NỀN DĨ AN">
+                    </div>
+
+                    <div class="field">
+                        <div class="two fields">
+                            <div class="field">
+                                <label>Loại dự án: </label>
+                                <select name="ProjectCategory" id="ProjectCategory">
+                                    <option value="1">Dự án Đông Bình Dương</option>
+                                    <option value="2">BĐS cần bán</option>
+                                    <option value="3">BĐS cho thuê</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>Địa điểm: </label>
+                                <input type="text" id="ProjectAddress" name="ProjectAddress" placeholder="VD: Bình Dương">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="field">
+                        <div class="two fields">
+                            <div class="field">
+
+                                <div class="two fields">
+                                    <div class="field">
+                                        <div class="field" style="margin-bottom:10px;">
+                                            <label>Kiểu:</label>
+                                            <div class="ui radio checkbox" style="margin-top:10px;">
+                                                <input type="radio" id="TypeGround" name="RadioType" checked="checked">
+                                                <label>Đất nền</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="field" style="margin-bottom:10px;">
+                                            <label>Diện tích: </label>
+                                            <input type="text" id="ProjectArea" name="ProjectArea" placeholder="VD: 1000 m2">
+                                        </div>
+
+                                        <div class="field" style="margin-bottom:10px;">
+                                            <label>Hướng: </label>
+                                            <input type="text" id="ProjectDirection" name="ProjectDirection" placeholder="VD: Đông Bắc">
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div class="field">
+                                        <div class="field" style="margin-bottom:10px;">
+                                            <label>&nbsp;</label>
+                                            <div class="ui radio checkbox" style="margin-top:10px;">
+                                                <input type="radio" id="TypeHome" name="RadioType">
+                                                <label>Nhà/Chung cư/Căn hộ</label>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="field" style="margin-bottom:10px;">
+                                            <label>Chiều dài: </label>
+                                            <input type="text" id="ProjectWidth" name="ProjectWidth" placeholder="VD: 450 m">
+                                        </div>
+                                        <div class="field" style="margin-bottom:10px;">
+                                            <label>Chiều rộng: </label>
+                                            <input type="text" id="ProjectHeight" name="ProjectHeight" placeholder="VD: 500 m">
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="two fields">
+                                    <div class="field" style="margin-bottom:10px;">
+                                        <label>Giá tham khảo: </label>
+                                        <input type="text" id="ProjectPrice" name="ProjectPrice" placeholder="VD: 500 tr - 1 tỷ">
+                                    </div>
+
+                                    <div class="field" style="margin-bottom:10px;">
+                                        <label>Pháp lý: </label>
+                                        <input type="text" id="ProjectJuridical" name="ProjectJuridical" placeholder="VD: Sổ đỏ / Sổ hồng">
+                                    </div>
+                                </div>
+
+                                <div class="two fields">
+                                    <div class="field" style="margin-bottom:10px;">
+
+                                        <div class="ui checked checkbox">
+                                            <input type="checkbox" id="IsShow" checked="checked">
+                                            <label><b>Hiển thị trên web</b></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="field" style="margin-bottom:10px;">
+                                        <div class="ui checked checkbox">
+                                            <input type="checkbox" id="IsHightLight">
+                                            <label><b>Dự án nổi bật</b></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>Ảnh đại diện:</label>
+                                <input type="file" id="FileThumbNews" accept="image/*" onchange="ShowImage(this)" />
+                                <div style="text-align:center; margin-top:10px;">
+                                    <img id="ThumbNews" style="width:360px; height:240px; border-radius:5px" src="~/images/no-image-box.png" />
+                                </div>
+                                <input type="hidden" id="UrlThubNews" name="UrlThubNews" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Mô tả chi tiết dự án: </label>
+                        <textarea id="ProjectContent" name="ProjectContent"></textarea>
+                    </div>
+                    <div class="field" style="text-align:center">
+                        <a id="btnCancelAddProject" class="ui red labeled icon button"><i class="x icon icon"></i> Hủy bỏ </a>
+                        <a id="btnExeAddProject" class="ui primary labeled icon button"><i class="plus icon"></i> Thêm mới </a>
+                    </div>
+
+                   
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="ui modal" id="popupAddProject">
+
+            <div class="header">Thêm mới dự án</div>
+            <div class="content">
+                @*<form>
+                    <div class="ui form">
+                        <div class="field">
+                            <label>Chọn hình ảnh banner:</label>
+                            <div style="font-style:italic">(Kích thước đề nghị: 840 x 360. Tối đa: 1MB)</div>
+                            <input type="file" name="fileBanner" id="fileBanner" accept="image/*" />
+                        </div>
+                    </div>
+                </form>*@
+                <div class="ui form">
+
+
+                    <label>Nội dung mô tả:</label>
+                    @*<div id="editor">
+                        <h1>Hello world!</h1>
+                        <p>I'm an instance of <a href="https://ckeditor.com">CKEditor</a>.</p>
+                    </div>*@
+
+                </div>
+
+            </div>
+            <div class="actions">
+                <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Hủy</a>
+                <button id='btnExeUploadBanner' type="submit" class='waves-effect waves-light ui green right labeled icon button'><i class='cloud upload icon'></i>Upload</button>
+            </div>
+        </div>
+
+
+
+
+
+
+        <!-- Popup Delete Banner-->
+        <div class="ui tiny modal" id="popupDelProject">
+            <div class="header">Xác nhận xóa banner</div>
+            <div class="content">
+                <p>
+                    Bạn có chắc chắn xóa banner này không?
+                </p>
+            </div>
+            <div class="actions">
+                <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Không </a>
+                <a class='waves-effect waves-light ui green right labeled icon button' id="btnExeDelBanner"><i class='checkmark icon'></i>Xóa</a>
+            </div>
+        </div>
+
+
+
+        <script src="~/ckeditor/ckeditor.js"></script>
+        <script src="~/ckfinder/ckfinder.js"></script>
+        <script>
+            $(document).ready(function () {
+                CKEDITOR.replace('ProjectContent', {
+                    language: 'vi',
+                    height: '350'
+                });
+                CKFinder.setupCKEditor(null, '/ckfinder');
+
+            });
+
+            function ShowImage(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#ThumbNews').attr('src', e.target.result)
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+                else {
+                    $('#ThumbNews').attr('src', '/images/Bg.png')
+                }
+            }
+
+
+            $("#btnExeAddProject").on("click", function (e) {
+
+                var ProjectName = $("#ProjectName").val();
+                var ProjectCategory = $("#ProjectCategory").val();
+                var ProjectAddress = $("#ProjectAddress").val();
+                var ProjectType = "1";
+                var TypeHome = $("#TypeHome:checked").val();
+                if (TypeHome == "on")
+                    ProjectType = "2";
+
+                var ProjectWidth = $("#ProjectWidth").val();
+                var ProjectArea = $("#ProjectArea").val();
+                var ProjectHeight = $("#ProjectArea").val();
+                var ProjectDirection = $("#ProjectDirection").val();
+                var ProjectPrice = $("#ProjectPrice").val();
+                var ProjectJuridical = $("#ProjectJuridical").val();
+
+                var IsShow = 0;
+                var CIsShow = $("#IsShow:checked").val();
+                if (CIsShow == "on")
+                    IsShow = 1
+
+                var IsHightLight = 0;
+                var CIsHightLight = $("#IsHightLight:checked").val();
+                if (CIsHightLight == "on")
+                    IsHightLight = 1
+
+
+             
+
+               
+
+
+                if ($.trim(ProjectName) == "") {
+                    alert("Tên dự án không được để trống.")
+                    $("#ProjectName").focus();
+                    return;
+                }
+
+                if ($.trim(ProjectCategory) == "") {
+                    alert("Vui lòng chọn danh mục dự án.")
+                    $("#ProjectCategory").focus();
+                    return;
+                }
+
+                if ($.trim(ProjectAddress) == "") {
+                    alert("Địa chỉ không được để trống.")
+                    $("#ProjectAddress").focus();
+                    return;
+                }
+
+                var data = new FormData();
+                var files = $("#FileThumbNews").get(0).files;
+                if (files.length > 0) {
+                    data.append("HelpSectionImages", files[0]);
+                }
+                else {
+                    alert("Vui lòng chọn file hình ảnh.");
+                    return;
+                }
+
+                var ProjectContent = CKEDITOR.instances['ProjectContent'].getData();
+                if ($.trim(ProjectContent) == "") {
+                    alert("Vui lòng nhập mô tả dự án.");
+                    return;
+                }
+                       
+                $("#btnExeAddProject").addClass("loading");
+                $("#btnExeAddProject").prop('disabled', true);
+
+                $.ajax({
+                    url: "/Admin/UploadThunbProject",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    //done: function (ret) {
+                    //    if (ret.rel == 1) {
+                    //        $("#UrlThubNews").val(ret.urlThumbNews)
+
+                    //        var news = {
+                    //            NewsTitle: NewsTitle,
+                    //            NewsType: NewsType,
+                    //            ShortDescription: ShortDescription,
+                    //            Thumb: ret.urlThumbNews,
+                    //            NewsContent: NewsContent
+                    //        };
+                    //         //AddNews(news);
+                    //        console.log(news);
+                    //    }
+                    //    if (ret.rel == -2)
+                    //        alert("File ảnh quá lớn, vui lòng chọn file ảnh nhỏ hơn 1MB.");
+                    //    if (ret.rel == -1)
+                    //        alert("Upload ảnh bị lỗi. Vui lòng thử lại sau.");
+                    //    if (ret.rel == 0)
+                    //        alert("Không thể lưu thông tin banner.");
+                    //},
+                    error: function () {
+                        alert("Upload ảnh đại diện lỗi. Thử lại sau.");
+                        $("#btnExeAddProject").removeClass("loading");
+                        $("#btnExeAddProject").prop('disabled', false);
+                    }
+                }).done(function (ret) {
+                    if (ret.rel == 1) {
+                        $("#UrlThubNews").val(ret.urlThumbProject)
+
+                        var project = {
+                            ProjectName: ProjectName,
+                            ProjectCategory: ProjectCategory,
+                            ProjectAddress: ProjectAddress,
+                            ProjectType: ProjectType,
+                            ProjectWidth: ProjectWidth,
+                            ProjectArea: ProjectArea,
+                            ProjectHeight: ProjectHeight,
+                            ProjectDirection: ProjectDirection,
+                            ProjectPrice: ProjectPrice,
+                            ProjectJuridical: ProjectJuridical,
+                            IsShow: IsShow,
+                            IsHightLight: IsHightLight,
+                            ProjectContent: ProjectContent,
+                            UrlThumbProject: ret.urlThumbProject
+                        }
+
+                        AddProject(project);
+                        //console.log(news);
+                    }
+                    if (ret.rel == -2) {
+                        alert("File ảnh quá lớn, vui lòng chọn file ảnh nhỏ hơn 1MB.");
+                        $("#btnExeAddProject").removeClass("loading");
+                        $("#btnExeAddProject").prop('disabled', false);
+                    }
+                    if (ret.rel == -1) {
+                        alert("Upload ảnh bị lỗi. Vui lòng thử lại sau.");
+                        $("#btnExeAddProject").removeClass("loading");
+                        $("#btnExeAddProject").prop('disabled', false);
+                    }
+                    if (ret.rel == 0) {
+                        alert("Không thể lưu dự án mới.");
+                        $("#btnExeAddProject").removeClass("loading");
+                        $("#btnExeAddProject").prop('disabled', false);
+                    }
+
+                });
+            });
+
+            function AddProject(dataProject) {
+                if (dataProject != null) {
+                    $.ajax({
+                        url: "/Admin/AddProject",
+                        type: "POST",
+                        cache: false,
+                        data: dataProject,
+                        success: function (ret) {
+                            if (ret.rel == 1)
+                                window.location.href = "/Admin/ProjectManage";
+                            else {
+                                alert("Thêm dự án không thành công.");
+                                $("#btnExeAddProject").removeClass("loading");
+                                $("#btnExeAddProject").prop('disabled', false);
+                            }
+                        },
+                        error: function () {
+                            alert("Thêm mới dự án bị lỗi. Thử lại sau.");
+                            $("#btnExeAddProject").removeClass("loading");
+                            $("#btnExeAddProject").prop('disabled', false);
+                        }
+                    });
+                }
+            }
+            $("#btnCancelAddProject").on("click", function () {
+                var c = confirm("Bạn có chắc chắn muốn hủy bỏ không?");
+                if (c == true) {
+                    window.location.href = "/Admin/ProjectManage"
+                }
+                return;
+            });
+        </script>
+
+
+
+
+    </div>
+

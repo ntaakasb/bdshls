@@ -1,0 +1,41 @@
+﻿@model OsCoreApplication.ViewModel.Models.NewsModels
+@{
+    ViewBag.Title = Model.NewsTitle;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="home-wrap" class="content-section fullpage-wrap">
+    <div id="post-wrap" class="content-section fullpage-wrap">
+        <div class="row margin-leftright-null">
+            <div class="container text">
+                <div class="row content-post no-margin">
+                    <!--  Post Meta  -->
+                    <div class="col-md-12 padding-leftright-null text-center">
+                        <h2 class="margin-bottom-null title simple left">@Model.NewsTitle</h2>
+                        <span class="category">@Model.NewsCategoryName</span>
+                        <span class="date">@Model.DateCreated</span>
+                    </div>
+                    <!--  END Post Meta  -->
+                    <div class="col-md-12 padding-onlytop-md padding-leftright-null">
+                        @Html.Raw(WebUtility.HtmlDecode(Model.NewsContent))
+                    </div>
+                </div>
+                <!--  Share Btn  -->
+                <div id="share">
+                    <a class="share-btn">
+                        <i class="icon ion-android-share-alt"></i>
+                    </a>
+                    
+                </div>
+                <!--  END Share Btn  -->
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <!-- Project Heightlights  -->
+    @{Html.RenderAction("NewsRandom", "News"); }
+    <!--  END Project Heightlights  -->
+    </div>

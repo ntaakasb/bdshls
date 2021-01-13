@@ -1,0 +1,196 @@
+﻿@model IEnumerable<OsCoreApplication.DataLayer.EFModel.NewsCategory>
+@{
+    ViewBag.Title = "NewsCategoryManage";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+    <div class="ui form">
+        <div class="content-wrapper">
+            <div class="content box">
+                <div class="ui small breadcrumb tops">
+                    <a href="/"><i class="large home teal icon"></i></a>
+                    <i class="right chevron icon divider"></i>
+                    <div class="active section">Quản lý loại tin tức</div>
+                </div>
+                <div class="box-body">
+                    <div class="field" style="text-align:right">
+                        <a id="btnAddNewsCategory" class="ui primary labeled icon button"><i class="plus icon"></i> Thêm Mới Thể Loại </a>
+                    </div>
+                    <div style='overflow: auto; margin-bottom: 12px;'>
+                        <table class='ui selectable celled table'>
+                            <thead>
+                                <tr>
+                                    <th style='text-align: center; width: 50px'>
+                                        STT
+                                    </th>
+                                    <th>
+                                        TÊN THỂ LOẠI
+                                    </th>
+                                    <th>
+                                        NGÀY ĐĂNG
+                                    </th>
+                                    <th class='two wide'>
+                                        CHỨC NĂNG
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Count() > 0 && Model.Any())
+                                {
+                                    int i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td style="text-align:center">@i</td>
+                                            <td>@item.NewsCategoryName</td>
+                                            <td>@item.DateCreated</td>
+                                            <td style="text-align:center"><a data-id="@item.id" class="ui mini red button del-newsCategory">Xóa</a></td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Popup Add News Category-->
+        <div class="ui tiny modal" id="popupAddNewsCategory">
+            <div class="header">Thêm mới loại tin tức</div>
+            <div class="content">
+                <form>
+                    <div class="ui form">
+                        <div class="field">
+                            <label>Tên thể loại tin tức:</label>
+                            <input type="text" id="NewsCategoryName" name="NewsCategoryName" placeholder="Nhập tên thể loại tin tức...">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Hủy</a>
+                <button id='btnExeAddNewsCategory' type="submit" class='waves-effect waves-light ui green right labeled icon button'><i class='save icon'></i>Lưu lại</button>
+            </div>
+        </div>
+
+
+
+        <!-- Popup Delete News-->
+        <div class="ui tiny modal" id="popupDelNewsCategory">
+            <div class="header">Xác nhận xóa loại tin tức</div>
+            <div class="content">
+                <p>
+                    Bạn có chắc chắn xóa loại tin tức này không?
+                </p>
+            </div>
+            <div class="actions">
+                <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Không</a>
+                <a class='waves-effect waves-light ui green right labeled icon button' id="btnExeDelNewsCategory"><i class='checkmark icon'></i>Xóa</a>
+            </div>
+        </div>
+
+
+
+        <script>
+
+            $("#btnAddNewsCategory").on("click", function (e) {
+                e.preventDefault();          
+                ShowModal("#popupAddNewsCategory");
+            })
+
+            $("#btnExeAddNewsCategory").on("click", function (e) {
+
+                var _NewsCategoryName = $("#NewsCategoryName").val();
+                if ($.trim(_NewsCategoryName) == "") {
+                    alert("Vui lòng nhập tên thể loại.")
+                    $("#NewsCategoryName").focus();
+                    return;
+                }
+
+                var data = { vNewsCategoryName: _NewsCategoryName };
+
+                $.ajax({
+                    url: "/Admin/AddNewsCategory",
+                    type: "POST",
+                    dataType: 'json',
+                    cache: false,
+                    data: data,
+                    success: function (ret) {
+                        if (ret.rel == 1) {
+                            location.reload();
+                            return;
+                        }
+                        if (ret.rel == 2)
+                            alert("Tên thể loại đã tồn tại. Vui lòng nhập tên khác.");
+                        else
+                            alert("Thêm mới loại tin tức lỗi.");
+                    },
+                    error: function () {
+                        alert("Thêm mới loại tin tức lỗi. Thử lại sau.");
+                    }
+                });
+            })
+
+
+
+
+
+
+
+
+
+
+            $(".del-newsCategory").on("click", function () {
+                $('#btnExeDelNewsCategory').attr('data-id', $(this).attr("data-id"));
+                ShowModal("#popupDelNewsCategory");
+            })
+
+            $("#btnExeDelNewsCategory").on("click", function (e) {
+                var _id = $(this).attr("data-id");
+
+                var newsCategoryID = {
+                    id: _id
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Admin/DeleteNewsCategory',
+                    dataType: 'json',
+                    cache: false,
+                    data: newsCategoryID,
+                    success: function (data) {
+                        if (data.rel == 1) {
+                            location.reload();
+                        }
+                        if (data.rel == 2) {
+                            alert("Không thể xóa vì có tin tức thuộc loại tin tức này.");
+                        }
+                        else {
+                            alert("Xóa có lỗi.");
+                            return;
+                        }
+                    },
+                    error: function () {
+                        alert("Không thể xóa.");
+                    }
+                });
+
+            })
+
+
+
+
+
+
+
+
+        </script>
+
+
+
+
+
+    </div>
+

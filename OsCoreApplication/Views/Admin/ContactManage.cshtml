@@ -1,0 +1,132 @@
+﻿@using OsCoreApplication.ViewModel.Models
+@model IEnumerable<OsCoreApplication.ViewModel.Models.ContactModels>
+@{
+    ViewBag.Title = "ContactManage";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Paging paging = ViewBag.Paging as Paging;
+}
+
+<div class="ui form">
+    <div class="content-wrapper">
+        <div class="content box">
+            <div class="ui small breadcrumb tops">
+                <a href="/"><i class="large home teal icon"></i></a>
+                <i class="right chevron icon divider"></i>
+                <div class="active section">Quản lý liên hệ</div>
+            </div>
+            <div class="box-body">
+                @*<div class="field">                 
+                </div>*@
+                <div style='overflow: auto; margin-bottom: 12px;'>
+                    <table class='ui selectable celled table'>
+                        <thead>
+                            <tr>
+                                <th style='text-align: center; width: 50px'>
+                                    NGÀY LIÊN HỆ
+                                </th>
+                                <th>
+                                    HỌ TÊN
+                                </th>
+                                <th>
+                                    ĐT / EMAIL
+                                </th>
+                                <th>
+                                    CHỦ ĐỀ
+                                </th>
+                                <th>
+                                    NỘI DUNG
+                                </th>
+                                <th class='two wide'>
+                                    CHỨC NĂNG
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count() > 0 && Model.Any())
+                            {
+                                int i = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td style="text-align:center; width:250px">@item.DateContact</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Subject</td>
+                                        <td style="width: 35%">@item.ContentMsg</td>
+                                        <td style="text-align:center"><a data-id="@item.id" class="ui mini red button del-contact">Xóa</a></td>
+                                    </tr>
+                                    i++;
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div style="text-align: center;">
+                    @{Html.RenderAction("Index", "Paging", new { p = paging }); }
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Popup Delete Contact-->
+    <div class="ui tiny modal" id="popupDelContact">
+        <div class="header">Xác nhận xóa liên hệ</div>
+        <div class="content">
+            <p>
+                Bạn có chắc chắn xóa liên hệ này không?
+            </p>
+        </div>
+        <div class="actions">
+            <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Không </a>
+            <a class='waves-effect waves-light ui green right labeled icon button' id="btnExeDelContact"><i class='checkmark icon'></i>Xóa</a>
+        </div>
+    </div>
+
+    <script>
+
+        $(".del-contact").on("click", function () {
+            $('#btnExeDelContact').attr('data-id', $(this).attr("data-id"));
+            ShowModal("#popupDelContact");
+        })
+
+        $("#btnExeDelContact").on("click", function () {
+            var _id = $(this).attr("data-id");
+
+            var contactID = {
+                id: _id
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/Admin/DeleteContact',
+                dataType: 'json',
+                cache: false,
+                data: contactID,
+                success: function (data) {
+                    if (data.rel == 1) {
+                        location.reload();
+                    }
+                    else {
+                        alert("Xóa có lỗi.")
+                    }
+                },
+                error: function () {
+                    alert("Không thể xóa.");
+                }
+            });
+
+        })
+
+
+
+    </script>
+
+
+</div>

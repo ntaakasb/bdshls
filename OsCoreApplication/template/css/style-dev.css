@@ -1,0 +1,81 @@
+﻿body {
+    font-family: arial;
+}
+
+#primary-nav .active > a, #primary-nav li > a:hover, #primary-nav li.selected > a {
+    color: #00770a;
+}
+.menu li {
+    float: left;
+    margin-left: 10px;
+    position: relative;
+    line-height: 50px;
+    text-transform: uppercase;
+}
+
+#primary-nav li a {
+    line-height: 50px;
+    font-weight: bold;
+}
+
+.slogan{
+    margin: 5px;
+    text-align: center;
+}
+
+    .slogan img {
+        margin-left: 17rem;
+    }
+
+#header .logo {
+    padding: 1rem;
+}
+#header .logo img {
+    width: auto;
+    overflow: hidden;
+    max-height: 110px;
+}
+.hotline-header img{
+    position: relative;
+    margin-top: 20px;
+}
+#owl-demo .item img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.thumb-img:before {
+    z-index: 3;
+    background-color: rgb(253 253 253 / 30%);
+}
+section {
+     padding-top: 3rem; 
+     padding-bottom: 3rem; 
+}
+.section-heading{
+    color: red;
+}
+
+.featured-places .featured-item .down-content span strong {
+    font-size: 1.6rem;
+    color: #bd0707;
+}
+
+
+
+.green-button a {
+    display: inline-block;
+    background-color: #5cb85c;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 16px;
+    text-decoration: none;
+    border: 2px solid #49a949;
+    transition: all 0.5s;
+}
+
+.thumb-img img{
+    max-height: 200px;
+}

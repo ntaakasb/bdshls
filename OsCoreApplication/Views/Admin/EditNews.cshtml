@@ -1,0 +1,157 @@
+﻿@using OsCoreApplication.ViewModel.Models
+@model OsCoreApplication.ViewModel.Models.NewsModels
+
+    @{
+        ViewBag.Title = "EditNews";
+        Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+
+    <div class="ui form">
+        <form id="frmAddNews">
+            <div class="content-wrapper">
+                <div class="content box">
+                    <div class="ui small breadcrumb tops">
+                        <a href="/"><i class="large home teal icon"></i></a>
+                        <i class="right chevron icon divider"></i>
+                        <div class="active section">Quản lý tin tức</div>
+                        <i class="right chevron icon divider"></i>
+                        <div class="active section">Chỉnh sửa</div>
+                        <input id="NewsID" type="hidden" value="@Model.id" />
+                    </div>
+                    <div class="box-body">
+                        <div class="field">
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Tiêu đề: </label>
+                                    <input type="text" id="NewsTitle" name="NewsTitle" value="@Model.NewsTitle" placeholder="Nhập tiêu đề tin tức...">
+                                </div>
+                                <div class="field">
+                                    <label>Thể loại: </label>
+                                    <select name="NewsType" id="NewsType">
+                                        <option value="1">Dự Án</option>
+                                        <option value="2">Thị Trường</option>
+                                        <option value="3">Bất Động Sản</option>
+                                        <option value="4">Khác</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Trích đoạn: </label>
+                            <textarea name="ShortDescription" id="ShortDescription" rows="12">@Model.ShortDescription</textarea>
+                        </div>
+                        <div class="field">
+                            <label>Nội dung tin tức: </label>
+                            <textarea id="NewsContent" name="NewsContent">@Model.NewsContent</textarea>
+                        </div>
+                        <div class="field" style="text-align:center">
+                            <a id="btnCancelAddNews" class="ui red labeled icon button"><i class="x icon icon"></i> Hủy bỏ </a>
+                            <a id="btnExeEditNews" class="ui primary labeled icon button"><i class="save icon"></i> Cập nhật </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        <script src="~/ckeditor/ckeditor.js"></script>
+        <script src="~/ckfinder/ckfinder.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                CKEDITOR.replace('NewsContent', {
+                    language: 'vi',
+                    height: '350'
+                });
+                CKFinder.setupCKEditor(null, '/ckfinder');
+
+                var idType = '@Model.idNewsCategory';
+                $("#NewsType").val(idType);
+            });
+
+
+            $("#btnExeEditNews").on("click", function (e) {
+
+                var NewsID = $("#NewsID").val();
+                var NewsTitle = $("#NewsTitle").val();
+                var NewsType = $("#NewsType").val();
+                var ShortDescription = $("#ShortDescription").val();
+
+                if ($.trim(NewsTitle) == "") {
+                    alert("Tiêu đề không được để trống.")
+                    $("#NewsTitle").focus();
+                    return;
+                }
+
+                if ($.trim(NewsType) == "") {
+                    alert("Vui lòng chọn loại tin tức.")
+                    $("#NewsType").focus();
+                    return;
+                }
+
+                if ($.trim(ShortDescription) == "") {
+                    alert("Trích đoạn ngắn không được để trống.")
+                    $("#ShortDescription").focus();
+                    return;
+                }
+
+            
+                var NewsContent = CKEDITOR.instances['NewsContent'].getData();
+                if ($.trim(NewsContent) == "") {
+                    alert("Vui lòng nhập nội dung tin tức.");
+                    return;
+                }
+
+                $("#btnExeEditNews").addClass("loading");
+                $("#btnExeEditNews").prop('disabled', true);
+
+                var news = {
+                    NewsID: NewsID,
+                    NewsTitle: NewsTitle,
+                    NewsType: NewsType,
+                    ShortDescription: ShortDescription,
+                    NewsContent: NewsContent
+                };
+                EditNews(news);
+
+            })
+
+            function EditNews(dataNews) {
+                if (dataNews != null) {
+                    $.ajax({
+                        url: "/Admin/EditNews",
+                        type: "POST",
+                        cache: false,
+                        data: dataNews,
+                        success: function (ret) {
+                            if (ret.rel == 1)
+                                window.location.href = "/Admin/NewsManage";
+                            else {
+                                alert("Thêm tin tức không thành công.");
+                                $("#btnExeEditNews").removeClass("loading");
+                                $("#btnExeEditNews").prop('disabled', false);
+                            }
+                        },
+                        error: function () {
+                            alert("Thêm mới tin tức bị lỗi. Thử lại sau.");
+                            $("#btnExeEditNews").removeClass("loading");
+                            $("#btnExeEditNews").prop('disabled', false);
+                        }
+                    });
+                }
+            }
+            $("#btnCancelAddNews").on("click", function () {
+                //var c = confirm("Bạn có chắc chắn muốn hủy bỏ không?");
+                //if (c == true) {
+                window.location.href = "/Admin/NewsManage"
+                //}
+                //return;
+            });
+        </script>
+
+
+
+
+    </div>
+
+
+

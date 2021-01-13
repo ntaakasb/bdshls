@@ -1,0 +1,74 @@
+﻿@using OsCoreApplication.Common
+@using OsCoreApplication.ViewModel.Models
+@model IEnumerable<OsCoreApplication.ViewModel.Models.NewsModels>
+@{
+                /**/
+
+                ViewBag.Title = "Dánh sách tin tức";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                Paging paging = ViewBag.Paging as Paging;
+}
+
+    <section class="featured-places">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row">
+
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-sm-4 col-xs-12">
+                                <div class="featured-item">
+                                    <div class="thumb">
+                                        <div class="thumb-img">
+                                            <img src="@item.Thumb" alt="">
+                                        </div>
+
+                                        <div class="overlay-content">
+                                            <strong title="Author"><i class="fa fa-briefcase"></i> @item.NewsCategoryName</strong> &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <strong title="Posted on"><i class="fa fa-calendar"></i>@item.DateCreated</strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="down-content">
+                                        <h4>@item.NewsTitle</h4>
+
+                                        <p>@item.ShortDescription</p>
+
+                                        <div class="text-button">
+
+
+                                            @Html.RouteLink(
+                "Đọc thêm...", "News Detail",
+                new { id = item.id, metatitle = ClsCommon.CreateMetatitle(item.NewsTitle) },
+                new { @class = "" })
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                @{Html.RenderAction("Index", "Paging", new { p = paging }); }
+            </div>
+
+
+
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+
+

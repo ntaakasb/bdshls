@@ -1,0 +1,15 @@
+﻿@model IEnumerable<OsCoreApplication.ViewModel.Models.ConfigWebModels>
+@{
+    Layout = null;
+
+    string phone = Model.FirstOrDefault(o => o.KeyConfig == "CONTACT_INFO_PHONE").ValueConfig;
+    string mail = Model.FirstOrDefault(o => o.KeyConfig == "CONTACT_INFO_MAIL").ValueConfig;
+    string time1 = Model.FirstOrDefault(o => o.KeyConfig == "CONTACT_TIMEWORK1").ValueConfig;
+    string time2 = Model.FirstOrDefault(o => o.KeyConfig == "CONTACT_TIMEWORK2").ValueConfig;
+    string address = Model.FirstOrDefault(o => o.KeyConfig == "CONTACT_ADDRESS").ValueConfig;
+}
+
+<li>ĐT <a href="">@phone</a></li>
+<li>Mail <a href="">@mail</a></li>
+
+<li><a href="">@address</a></li>

@@ -1,0 +1,394 @@
+﻿@using OsCoreApplication.Common
+@using OsCoreApplication.DataLayer.EFModel
+@using OsCoreApplication.ViewModel.Models
+
+@{
+    ViewBag.Title = "Trang chủ";
+    List<ConfigWebModels> configWebs = ViewBag.ConfigWebHome as List<ConfigWebModels>;
+    string slogonAbout = configWebs.FirstOrDefault(o => o.KeyConfig == "SLG_ABOUT").ValueConfig;
+    string contentAbout = configWebs.FirstOrDefault(o => o.KeyConfig == "CONTENT_ABOUT").ValueConfig;
+    List<ProjectModels> projectsBinhDuongEast = ViewBag.BinhDuongEast as List<ProjectModels>;
+    List<ProjectModels> saleProject = ViewBag.SaleProject as List<ProjectModels>;
+    List<ProjectModels> leaseProject = ViewBag.LeaseProject as List<ProjectModels>;
+    List<ImagesUpload> imagesUpload = ViewBag.ImagesUpload as List<ImagesUpload>;
+
+    List<ProjectModels> ProjectHightlight = ViewBag.ProjectHightlight as List<ProjectModels>;
+
+    List<NewsModels> ListNews = ViewBag.ListNews as List<NewsModels>;
+
+
+}
+
+<main>
+    <section class="our-services">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="left-content">
+                        <br>
+                        <h4>MỘT CHỮ TÍN - VẠN NIỀM TIN</h4>
+
+                        <p>
+                            Thành lập từ 2017, trãi qua hàng loạt biến động và sóng gió ở trị trường bất động sản Bình Dương.
+                            Hoàng Liên Sơn không ngừng vươn mình, thay đổi để làm chiếc cầu nối vững chắc và tin cậy cho khách hàng.
+                            Trở thành một trong những công ty bất động sản hàng đầu Việt Nam.
+                        </p>
+                        <p>
+                            Để đáp ứng điều đó, chúng tôi không ngừng cập nhật thông tin mới nhất, tin cậy nhất.
+                            Nâng cao tiềm lực tài chính, mở rộng quy mô và ứng dụng các công nghệ hiện đại trong công tác quản lý và kinh doanh.
+                            Con đường chúng tôi chọn là những sản phẩm BĐS chất lượng,
+                            những kiến thức chuyên môn sâu rộng phụ hợp với thị trường hiện tại
+                            và mang lại lợi ích cho khách hàng, uy tín cho chúng tôi.
+                        </p>
+
+                        <br>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <img src="~/template/img/tuantienphat.jpg" class="img-fluid" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="featured-places">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-heading">
+                        @*<span>Featured Properties</span>*@
+                        <h2>SẢN PHẨM NỔI BẬT</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="spotlight-product" class="owl-carousel owl-theme">
+                    @if (ProjectHightlight != null && ProjectHightlight.Any())
+                    {
+                        for (int i = 0; i < 9; i++) {
+                            ProjectHightlight.Add(ProjectHightlight[0]);
+                        }
+
+                        foreach (var item in ProjectHightlight)
+                        {
+                            <div class="item">
+                                <div class="featured-item">
+                                    <div class="thumb">
+                                        <div class="thumb-img">
+                                            <img src="@item.Thumbnail" alt="">
+                                        </div>
+
+                                    </div>
+                                    <div class="down-content">
+                                        <h4>@item.ProjectName</h4>
+
+                                        <br>
+
+                                        <p>@item.Address</p>
+
+                                        <p><span><strong>@item.Price</strong></span></p>
+
+                                        <div class="text-button">
+                                            <a href="/du-an/@ClsCommon.CreateMetatitle(item.ProjectName)-@item.id">Xem chi tiết</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                 
+                </div>
+               
+
+
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-places">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-heading">
+                        @*<span>Featured Properties</span>*@
+                        <h2>DỰ ÁN ĐÔNG BÌNH DƯƠNG</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @if (projectsBinhDuongEast != null && projectsBinhDuongEast.Any())
+                {
+                    int i = 0;
+                    foreach (var item in projectsBinhDuongEast)
+                    {
+                        if (i != 0 && i % 4 == 0)
+                        {
+                            @Html.Raw("</div><div class='row'>")
+                        }
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="featured-item">
+                                <div class="thumb">
+                                    <div class="thumb-img">
+                                        <img src="@item.Thumbnail" alt="">
+                                    </div>
+                                    <div class="overlay-content">
+                                        <strong title="Bedrooms"><i class="fa fa-bed"></i> @item.Acreage </strong>
+                                        @*&nbsp;&nbsp;&nbsp;&nbsp;
+                                <strong title="Bathrooms"><i class="fa fa-tint"></i> Bathrooms: 4</strong>*@
+                                    </div>
+                                </div>
+                                <div class="down-content">
+                                    <h4>@item.ProjectName</h4>
+
+                                    <br>
+
+                                    <p>@item.Address</p>
+
+                                    <p><span><strong>@item.Price</strong></span></p>
+
+                                    <div class="text-button">
+                                        <a href="/du-an/@ClsCommon.CreateMetatitle(item.ProjectName)-@item.id">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        i++;
+                    }
+                }
+            </div>
+
+            <div style="text-align:center">
+                <div class="green-button">
+                    @Html.ActionLink("XEM THÊM", "BinhDuongEast", "Project", null, null)
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="featured-places">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-heading">
+                        @*<span>Featured Properties</span>*@
+                        <h2>DỰ ÁN CẦN BÁN</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @if (saleProject != null && saleProject.Any())
+                {
+                    int i = 0;
+                    foreach (var item in saleProject)
+                    {
+                        if (i != 0 && i % 4 == 0)
+                        {
+                            @Html.Raw("</div><div class='row'>")
+                        }
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="featured-item">
+                                <div class="thumb">
+                                    <div class="thumb-img">
+                                        <img src="@item.Thumbnail" alt="">
+                                    </div>
+                                    <div class="overlay-content">
+                                        <strong title="Bedrooms"><i class="fa fa-bed"></i> @item.Acreage </strong>
+                                        @*&nbsp;&nbsp;&nbsp;&nbsp;
+                                <strong title="Bathrooms"><i class="fa fa-tint"></i> Bathrooms: 4</strong>*@
+                                    </div>
+                                </div>
+                                <div class="down-content">
+                                    <h4>@item.ProjectName</h4>
+
+                                    <br>
+
+                                    <p>@item.Address</p>
+
+                                    <p><span><strong>@item.Price</strong></span></p>
+
+                                    <div class="text-button">
+                                        <a href="/du-an/@ClsCommon.CreateMetatitle(item.ProjectName)-@item.id">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        i++;
+                    }
+                }
+            </div>
+
+            <div style="text-align:center">
+                <div class="green-button">
+                    @Html.ActionLink("XEM THÊM", "SaleProject", "Project", null, null)
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+
+    <section class="featured-places">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-heading">
+                        @*<span>Featured Properties</span>*@
+                        <h2>DỰ ÁN CHO THUÊ</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @if (leaseProject != null && leaseProject.Any())
+                {
+                    int i = 0;
+                    foreach (var item in leaseProject)
+                    {
+                        if (i != 0 && i % 4 == 0)
+                        {
+                            @Html.Raw("</div><div class='row'>")
+                        }
+                        <div class="item">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
+                                <div class="featured-item">
+                                    <div class="thumb">
+                                        <div class="thumb-img">
+                                            <img src="@item.Thumbnail" alt="">
+                                        </div>
+                                        <div class="overlay-content">
+                                            <strong title="Bedrooms"><i class="fa fa-bed"></i> @item.Acreage </strong>
+                                            @*&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <strong title="Bathrooms"><i class="fa fa-tint"></i> Bathrooms: 4</strong>*@
+                                        </div>
+                                    </div>
+                                    <div class="down-content">
+                                        <h4>@item.ProjectName</h4>
+
+                                        <br>
+
+                                        <p>@item.Address</p>
+
+                                        <p><span><strong>@item.Price</strong></span></p>
+
+                                        <div class="text-button">
+                                            <a href="/du-an/@ClsCommon.CreateMetatitle(item.ProjectName)-@item.id">Xem chi tiết</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            i++;
+                        </div>
+
+                    }
+                }
+
+
+
+                @*@if (leaseProject != null && leaseProject.Any())
+        {
+            int i = 0;
+            foreach (var item in leaseProject)
+            {
+                if (i != 0 && i % 4 == 0)
+                {
+                    @Html.Raw("</div><div class='row'>")
+                }
+                <div class="col-md-3 col-sm-6 col-xs-12">
+                    <div class="featured-item">
+                        <div class="thumb">
+                            <div class="thumb-img">
+                                <img src="@item.Thumbnail" alt="">
+                            </div>
+                            <div class="overlay-content">
+                                <strong title="Bedrooms"><i class="fa fa-bed"></i> @item.Acreage </strong>
+                            </div>
+                        </div>
+                        <div class="down-content">
+                            <h4>@item.ProjectName</h4>
+
+                            <br>
+
+                            <p>@item.Address</p>
+
+                            <p><span><strong>@item.Price</strong></span></p>
+
+                            <div class="text-button">
+                                <a href="/du-an/@ClsCommon.CreateMetatitle(item.ProjectName)-@item.id">Xem chi tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                i++;
+            }*@
+                }
+            </div>
+
+            <div style="text-align:center">
+                <div class="green-button">
+                    @Html.ActionLink("XEM THÊM", "LeaseProject", "Project", null, null)
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+
+    <section class="popular-places" id="popular">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="section-heading">
+                        <h2>Một số hình ảnh</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div id="spotlight-images" class="owl-carousel owl-theme">
+
+
+                @for (int i = 1; i < 10; i++)
+                {
+                    <div class="item popular-item">
+                        <div class="thumb">
+                            <img src="~/Content/gallery/@(i).jpg" alt="">
+                            @*<div class="text-content">
+                                    <h4>John Doe</h4>
+                                    <span>"Lorem ipsum dolor sit amet, consectetur an adipisicing elit. Itaque, corporis nulla at quia quaerat."</span>
+                                </div>
+                                <div class="plus-button">
+                                    <a href="testimonials.html"><i class="fa fa-plus"></i></a>
+                                </div>*@
+                        </div>
+                    </div>
+                }
+
+
+
+            </div>
+        </div>
+    </section>
+
+
+
+</main>
+
+@section scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('#spotlight-product').owlCarousel({
+                loop: true,
+                margin: 10,
+                navigation: true, // Show next and prev buttons
+                autoplay: true,
+                autoplayTimeout: 2000,
+                autoplayHoverPause: true,
+                items: 4
+            })
+        });
+    </script>
+}

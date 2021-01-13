@@ -1,0 +1,185 @@
+﻿@model IEnumerable<OsCoreApplication.ViewModel.Models.BannerModels>
+@{
+    ViewBag.Title = "BannerManage";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+    <div class="ui form">
+        <div class="content-wrapper">
+            <div class="content box">
+                <div class="ui small breadcrumb tops">
+                    <a href="/"><i class="large home teal icon"></i></a>
+                    <i class="right chevron icon divider"></i>
+                    <div class="active section">Quản lý Banner</div>
+                </div>
+                <div class="box-body">
+                    <div class="field" style="text-align:right">
+                        <a id="btnAddBanner" class="ui primary labeled icon button"><i class="plus icon"></i> Thêm Mới Banner </a>
+                    </div>
+                    <div style='overflow: auto; margin-bottom: 12px;'>
+                        <table class='ui selectable celled table'>
+                            <thead>
+                                <tr>
+                                    <th style='text-align: center; width: 50px'>
+                                        STT
+                                    </th>
+                                    <th style="width:250px">
+                                        HÌNH ẢNH
+                                    </th>
+                                    <th>
+                                        NGÀY ĐĂNG
+                                    </th>
+                                    <th class='two wide'>
+                                        CHỨC NĂNG
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Count() > 0 && Model.Any())
+                                {
+                                    int i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td style="text-align:center">@i</td>
+                                            <td style="text-align:center"><img src="@item.ImageUrl" style="width:200px; height:auto" /></td>
+                                            <td>@item.DateCreated</td>
+                                            <td style="text-align:center"><a data-id="@item.id" class="ui mini red button del-banner">Xóa</a></td>
+                                        </tr>
+                                        i++;
+                                    }
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+       
+            <div class="ui tiny modal" id="popupAddBanner">
+
+                <div class="header">Thêm mới banner</div>
+                <div class="content">
+                    <form>
+                        <div class="ui form">
+                            <div class="field">
+                                <label>Chọn hình ảnh banner:</label>
+                                <div style="font-style:italic">(Kích thước đề nghị: 840 x 360. Tối đa: 1MB)</div>
+                                <input type="file" name="fileBanner" id="fileBanner" accept="image/*" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="actions">
+                    <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Hủy</a>
+                    <button id='btnExeUploadBanner' type="submit" class='waves-effect waves-light ui green right labeled icon button'><i class='cloud upload icon'></i>Upload</button>
+                </div>              
+            </div>
+        
+
+
+
+
+
+            <!-- Popup Delete Banner-->
+            <div class="ui tiny modal" id="popupDelBanner">
+                <div class="header">Xác nhận xóa banner</div>
+                <div class="content">
+                    <p>
+                        Bạn có chắc chắn xóa banner này không?
+                    </p>
+                </div>
+                <div class="actions">
+                    <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Không </a>
+                    <a class='waves-effect waves-light ui green right labeled icon button' id="btnExeDelBanner"><i class='checkmark icon'></i>Xóa</a>
+                </div>
+            </div>
+
+
+            <script>
+
+                $(".del-banner").on("click", function () {
+                    $('#btnExeDelBanner').attr('data-id', $(this).attr("data-id"));
+                    ShowModal("#popupDelBanner");
+                })
+
+                $("#btnExeDelBanner").on("click", function (e) {
+                    var _id = $(this).attr("data-id");
+
+                    var bannerID = {
+                        id: _id
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/Admin/DeleteBanner',
+                        dataType: 'json',
+                        cache: false,
+                        data: bannerID,
+                        success: function (data) {
+                            if (data.rel == 1) {
+                                location.reload();
+                            }
+                            else {
+                                alert("Xóa có lỗi.")
+                            }
+                        },
+                        error: function () {
+                            alert("Không thể xóa.");
+                        }
+                    });
+
+                })
+
+                $("#btnAddBanner").on("click", function (e) {
+                    e.preventDefault();
+                    //$('#btnExeDelBanner').attr('data-id', $(this).attr("data-id"));
+                    ShowModal("#popupAddBanner");
+                })
+
+
+                $("#btnExeUploadBanner").on("click", function (e) {
+
+                    var data = new FormData();
+                    var files = $("#fileBanner").get(0).files;
+                    if (files.length > 0) {
+                        data.append("HelpSectionImages", files[0]);
+                    }
+                    else {
+                        alert("Vui lòng chọn file hình ảnh.");
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "/Admin/UploadBanner",
+                        type: "POST",
+                        processData: false,
+                        contentType: false,
+                        data: data,
+                        success: function (ret) {
+                            if (ret.rel == 1)
+                                location.reload();
+                            if (ret.rel == -2)
+                                alert("File ảnh quá lớn, vui lòng chọn file ảnh nhỏ hơn 1MB.");
+                            if (ret.rel == -1)
+                                alert("Upload ảnh bị lỗi. Vui lòng thử lại sau.");
+                            if (ret.rel == 0)
+                                alert("Không thể lưu thông tin banner.");
+                        },
+                        error: function () {
+                            alert("Thêm mới banner lỗi. Thử lại sau.");
+                        }
+                    });                 
+                })
+
+
+
+
+
+            </script>
+
+        </div>
+

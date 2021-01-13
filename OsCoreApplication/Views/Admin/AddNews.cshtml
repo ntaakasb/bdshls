@@ -1,0 +1,293 @@
+﻿@{
+    ViewBag.Title = "AddNews";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+    <div class="ui form">
+        <form id="frmAddNews">
+            <div class="content-wrapper">
+                <div class="content box">
+                    <div class="ui small breadcrumb tops">
+                        <a href="/"><i class="large home teal icon"></i></a>
+                        <i class="right chevron icon divider"></i>
+                        <div class="active section">Quản lý tin tức</div>
+                        <i class="right chevron icon divider"></i>
+                        <div class="active section">Thêm mới</div>
+                    </div>
+                    <div class="box-body">
+
+                        <div class="field">
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Tiêu đề: </label>
+                                    <input type="text" id="NewsTitle" name="NewsTitle" placeholder="Nhập tiêu đề tin tức...">
+                                </div>
+                                <div class="field">
+                                    <label>Thể loại: </label>
+                                    <select name="NewsType" id="NewsType">
+                                        <option value="1">Dự Án</option>
+                                        <option value="2">Thị Trường</option>
+                                        <option value="3">Bất Động Sản</option>
+                                        <option value="4">Khác</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Trích đoạn: </label>
+                                    <textarea name="ShortDescription" id="ShortDescription" rows="12"></textarea>
+                                </div>
+
+                                <div class="field">
+
+                                    <label>Thumb:</label>
+                                    <input type="file" id="FileThumbNews" accept="image/*" onchange="ShowImage(this)" />
+                                    <div style="text-align:center; margin-top:10px;">
+                                        <img id="ThumbNews" style="width:300px; height:170px; border-radius:5px" src="~/images/Bg.png" />
+                                    </div>
+                                    <input type="hidden" id="UrlThubNews" name="UrlThubNews" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>Nội dung tin tức: </label>
+                            <textarea id="NewsContent" name="NewsContent"></textarea>
+                        </div>
+                        <div class="field" style="text-align:center">
+                            <a id="btnCancelAddNews" class="ui red labeled icon button"><i class="x icon icon"></i> Hủy bỏ </a>
+                            <a id="btnExeAddNews" class="ui primary labeled icon button"><i class="save icon"></i> Lưu lại </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
+        <div class="ui modal" id="popupAddProject">
+
+            <div class="header">Thêm mới dự án</div>
+            <div class="content">
+                @*<form>
+                    <div class="ui form">
+                        <div class="field">
+                            <label>Chọn hình ảnh banner:</label>
+                            <div style="font-style:italic">(Kích thước đề nghị: 840 x 360. Tối đa: 1MB)</div>
+                            <input type="file" name="fileBanner" id="fileBanner" accept="image/*" />
+                        </div>
+                    </div>
+                </form>*@
+                <div class="ui form">
+
+
+                    <label>Nội dung mô tả:</label>
+                    @*<div id="editor">
+                        <h1>Hello world!</h1>
+                        <p>I'm an instance of <a href="https://ckeditor.com">CKEditor</a>.</p>
+                    </div>*@
+
+                </div>
+
+            </div>
+            <div class="actions">
+                <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Hủy</a>
+                <button id='btnExeUploadBanner' type="submit" class='waves-effect waves-light ui green right labeled icon button'><i class='cloud upload icon'></i>Upload</button>
+            </div>
+        </div>
+
+
+
+
+
+
+        <!-- Popup Delete Banner-->
+        <div class="ui tiny modal" id="popupDelProject">
+            <div class="header">Xác nhận xóa banner</div>
+            <div class="content">
+                <p>
+                    Bạn có chắc chắn xóa banner này không?
+                </p>
+            </div>
+            <div class="actions">
+                <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Không </a>
+                <a class='waves-effect waves-light ui green right labeled icon button' id="btnExeDelBanner"><i class='checkmark icon'></i>Xóa</a>
+            </div>
+        </div>
+
+
+
+        <script src="~/ckeditor/ckeditor.js"></script>
+        <script src="~/ckfinder/ckfinder.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                CKEDITOR.replace('NewsContent', {
+                    language: 'vi',
+                    height: '350'
+                });
+                CKFinder.setupCKEditor(null, '/ckfinder');
+
+            });
+
+            function ShowImage(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#ThumbNews').attr('src', e.target.result)
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+                else {
+                    $('#ThumbNews').attr('src', '/images/Bg.png')
+                }
+            }
+            $("#btnExeAddNews").on("click", function (e) {
+
+                var NewsTitle = $("#NewsTitle").val();
+                var NewsType = $("#NewsType").val();
+                var ShortDescription = $("#ShortDescription").val();
+
+                if ($.trim(NewsTitle) == "") {
+                    alert("Tiêu đề không được để trống.")
+                    $("#NewsTitle").focus();
+                    return;
+                }
+
+                if ($.trim(NewsType) == "") {
+                    alert("Vui lòng chọn loại tin tức.")
+                    $("#NewsType").focus();
+                    return;
+                }
+
+                if ($.trim(ShortDescription) == "") {
+                    alert("Trích đoạn ngắn không được để trống.")
+                    $("#ShortDescription").focus();
+                    return;
+                }
+
+                var data = new FormData();
+                var files = $("#FileThumbNews").get(0).files;
+                if (files.length > 0) {
+                    data.append("HelpSectionImages", files[0]);
+                    //console.log(data);
+                }
+                else {
+                    alert("Vui lòng chọn file hình ảnh.");
+                    return;
+                }
+
+                var NewsContent = CKEDITOR.instances['NewsContent'].getData();
+                if ($.trim(NewsContent) == "") {
+                    alert("Vui lòng nhập nội dung tin tức.");
+                    return;
+                }
+
+                $("#btnExeAddNews").addClass("loading");
+                $("#btnExeAddNews").prop('disabled', true);
+
+                $.ajax({
+                    url: "/Admin/UploadThunbNews",
+                    type: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    //done: function (ret) {
+                    //    if (ret.rel == 1) {
+                    //        $("#UrlThubNews").val(ret.urlThumbNews)
+
+                    //        var news = {
+                    //            NewsTitle: NewsTitle,
+                    //            NewsType: NewsType,
+                    //            ShortDescription: ShortDescription,
+                    //            Thumb: ret.urlThumbNews,
+                    //            NewsContent: NewsContent
+                    //        };
+                    //         //AddNews(news);
+                    //        console.log(news);
+                    //    }
+                    //    if (ret.rel == -2)
+                    //        alert("File ảnh quá lớn, vui lòng chọn file ảnh nhỏ hơn 1MB.");
+                    //    if (ret.rel == -1)
+                    //        alert("Upload ảnh bị lỗi. Vui lòng thử lại sau.");
+                    //    if (ret.rel == 0)
+                    //        alert("Không thể lưu thông tin banner.");
+                    //},                 
+                    error: function () {
+                        alert("Thêm mới banner lỗi. Thử lại sau.");
+                        $("#btnExeAddNews").removeClass("loading");
+                        $("#btnExeAddNews").prop('disabled', false);
+                    }
+                }).done(function (ret) {
+                    if (ret.rel == 1) {
+                            $("#UrlThubNews").val(ret.urlThumbNews)
+                            var news = {
+                                NewsTitle: NewsTitle,
+                                NewsType: NewsType,
+                                ShortDescription: ShortDescription,
+                                Thumb: ret.urlThumbNews,
+                                NewsContent: NewsContent
+                            };
+                            AddNews(news);
+                            //console.log(news);
+                        }
+                    if (ret.rel == -2) {
+                        alert("File ảnh quá lớn, vui lòng chọn file ảnh nhỏ hơn 1MB.");
+                        $("#btnExeAddNews").removeClass("loading");
+                        $("#btnExeAddNews").prop('disabled', false);
+                    }
+                    if (ret.rel == -1) {
+                        alert("Upload ảnh bị lỗi. Vui lòng thử lại sau.");
+                        $("#btnExeAddNews").removeClass("loading");
+                        $("#btnExeAddNews").prop('disabled', false);
+                    }
+                    if (ret.rel == 0) {
+                        alert("Không thể lưu tin tức mới.");
+                        $("#btnExeAddNews").removeClass("loading");
+                        $("#btnExeAddNews").prop('disabled', false);
+                    }
+
+                });
+            })
+
+            function AddNews(dataNews) {
+                if (dataNews != null) {
+                    $.ajax({
+                        url: "/Admin/AddNews",
+                        type: "POST",
+                        cache: false,
+                        data: dataNews,
+                        success: function (ret) {
+                            if (ret.rel == 1)
+                                window.location.href = "/Admin/NewsManage";
+                            else {
+                                alert("Thêm tin tức không thành công.");
+                                $("#btnExeAddNews").removeClass("loading");
+                                $("#btnExeAddNews").prop('disabled', false);
+                            }
+                        },
+                        error: function () {
+                            alert("Thêm mới tin tức bị lỗi. Thử lại sau.");
+                            $("#btnExeAddNews").removeClass("loading");
+                            $("#btnExeAddNews").prop('disabled', false);
+                        }
+                    });
+                } 
+            }
+            $("#btnCancelAddNews").on("click", function () {
+                var c = confirm("Bạn có chắc chắn muốn hủy bỏ không?");
+                if (c == true) {
+                    window.location.href = "/Admin/NewsManage"
+                }
+                return;
+            });
+        </script>
+
+
+
+
+    </div>
+

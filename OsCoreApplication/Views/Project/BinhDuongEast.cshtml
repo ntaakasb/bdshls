@@ -1,0 +1,75 @@
+﻿@using OsCoreApplication.Common
+@using OsCoreApplication.ViewModel.Models
+@model IEnumerable<OsCoreApplication.ViewModel.Models.ProjectModels>
+@{
+    ViewBag.Title = "Dự án Đông Bình Dương";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Paging paging = ViewBag.Paging as Paging;
+}
+
+
+
+<section class="featured-places">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    @*<span>Featured Properties</span>*@
+                    <h2>DỰ ÁN ĐÔNG BÌNH DƯƠNG</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @if (Model != null && Model.Any())
+            {
+                int i = 0;
+                foreach (var item in Model)
+                {
+                    if (i != 0 && i % 4 == 0)
+                    {
+                        @Html.Raw("</div><div class='row'>")
+                    }
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="featured-item">
+                            <div class="thumb">
+                                <div class="thumb-img">
+                                    <img src="@item.Thumbnail" alt="">
+                                </div>
+                                <div class="overlay-content">
+                                    <strong title="Bedrooms"><i class="fa fa-bed"></i> @item.Acreage </strong>
+                                    @*&nbsp;&nbsp;&nbsp;&nbsp;
+                                <strong title="Bathrooms"><i class="fa fa-tint"></i> Bathrooms: 4</strong>*@
+                                </div>
+                            </div>
+                            <div class="down-content">
+                                <h4>@item.ProjectName</h4>
+
+                                <br>
+
+                                <p>@item.Address</p>
+
+                                <p><span><strong>@item.Price</strong></span></p>
+
+                                <div class="text-button">
+                                    <a href="/du-an/@ClsCommon.CreateMetatitle(item.ProjectName)-@item.id">Xem chi tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    i++;
+                }
+            }
+        </div>
+
+        <div style="text-align: center;">
+            @{Html.RenderAction("Index", "Paging", new { p = paging }); }
+        </div>
+
+
+        @{Html.RenderAction("ProjectHeightlights", "Project"); }
+
+    </div>
+</section>
+
+
+

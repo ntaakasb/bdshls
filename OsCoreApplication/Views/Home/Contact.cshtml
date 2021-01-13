@@ -1,0 +1,77 @@
+﻿
+
+
+
+<section class="banner banner-secondary" id="top" style="background-image: url(../template/img/banner-image-3-1920x300.jpg);">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="banner-caption">
+                    <div class="line-dec"></div>
+                    <h2>LIÊN HỆ</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main>
+    <section class="popular-places">
+        <div class="container">
+            <div class="contact-content">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="left-content">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <input name="name" type="text" class="form-control" id="name" placeholder="Họ tên..." required="">
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-6">
+                                    <fieldset>
+                                        <input name="mail" type="text" class="form-control" id="mail" placeholder="Điện thoại / Email..." required="">
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <fieldset>
+                                        <input name="subjectForm" type="text" class="form-control" id="subjectForm" placeholder="Chủ đề..." required="">
+                                    </fieldset>
+                                </div>
+
+                                    <div class="col-md-12">
+                                        <fieldset>
+                                            <textarea name="messageForm" rows="6" class="form-control" id="messageForm" placeholder="Nội dung..." required=""></textarea>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <fieldset>
+                                            <div class="blue-button">
+                                                <a href="#" id="submit-contact" class="btn">Gửi Liên Hệ</a>
+                                            </div>
+                                        </fieldset>
+                                        <div id="msg" class="message"></div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="right-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="content">
+                                        <p>Luôn sẵn sàng, bất cứ khi nào bạn cần</p>
+                                        <p>
+                                            @{Html.RenderAction("InfoContact", "InfoFooter"); }
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

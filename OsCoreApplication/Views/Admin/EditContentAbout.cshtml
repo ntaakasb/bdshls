@@ -1,0 +1,114 @@
+﻿@model IEnumerable<OsCoreApplication.ViewModel.Models.ConfigWebModels>
+
+
+
+@{
+    ViewBag.Title = "EditContentAbout";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+    string contentAbout = Model.FirstOrDefault(o => o.KeyConfig == "CONTENT_ABOUT").ValueConfig;
+    long keyConfig = Model.FirstOrDefault(o => o.KeyConfig == "CONTENT_ABOUT").id;
+}
+
+<div class="ui form">
+    <form id="frmEditAboutContent">
+        <div class="content-wrapper">
+            <div class="content box">
+                <div class="ui small breadcrumb tops">
+                    <a href="/"><i class="large home teal icon"></i></a>
+                    <i class="right chevron icon divider"></i>
+                    <div class="active section">Tùy chỉnh website</div>
+                    <i class="right chevron icon divider"></i>
+                    <div class="active section">Chỉnh sửa nội dung giới thiệu</div>
+                    <input id="KeyConfig" type="hidden" value="@keyConfig" />
+                </div>
+                <div class="box-body">
+                    <div class="field">
+                        <label>Nội dung: </label>
+                        <textarea id="AboutContent" name="AboutContent">@contentAbout</textarea>
+                    </div>
+                    <div class="field" style="text-align:center">
+                        <a id="btnCancelUpdateContentAbout" class="ui red labeled icon button"><i class="x icon icon"></i> Hủy bỏ </a>
+                        <a id="btnExeUpdateContentAbout" class="ui primary labeled icon button"><i class="save icon"></i> Cập nhật </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckfinder/ckfinder.js"></script>
+
+    <script>
+            $(document).ready(function () {
+                var ckeditor = CKEDITOR.replace('AboutContent', {
+                    language: 'vi',
+                    height: '350'
+                });
+                CKFinder.setupCKEditor(null, '/ckfinder');
+                ckeditor.setData(unescape('@contentAbout'));
+            });
+
+
+        $("#btnExeUpdateContentAbout").on("click", function (e) {
+
+            var KeyConfig = $("#KeyConfig").val();               
+            var AboutContent = CKEDITOR.instances['AboutContent'].getData();
+            if ($.trim(AboutContent) == "") {
+                    alert("Vui lòng nhập nội dung.");
+                    return;
+                }
+
+            $("#btnExeUpdateContentAbout").addClass("loading");
+            $("#btnExeUpdateContentAbout").prop('disabled', true);
+
+            var congfig = {
+                keyConfig: KeyConfig,
+                valueConfig: escape(AboutContent)
+            };
+            EditContentAbout(congfig);
+
+            })
+
+        function EditContentAbout(congfig) {
+            if (congfig != null) {
+                    $.ajax({
+                        url: "/Admin/UpdateConfig",
+                        type: "POST",
+                        cache: false,
+                        data: congfig,
+                        success: function (ret) {
+                            if (ret.rel == 1)
+                                window.location.href = "/Admin/Webconfig";
+                            else {
+                                alert("Cập nhật không thành công.");
+                                $("#btnExeEditNews").removeClass("loading");
+                                $("#btnExeEditNews").prop('disabled', false);
+                            }
+                        },
+                        error: function () {
+                            alert("Cập nhật không thành công.");
+                            $("#btnExeEditNews").removeClass("loading");
+                            $("#btnExeEditNews").prop('disabled', false);
+                        }
+                    });
+                }
+        }
+
+
+        $("#btnCancelUpdateContentAbout").on("click", function () {
+                //var c = confirm("Bạn có chắc chắn muốn hủy bỏ không?");
+                //if (c == true) {
+            window.location.href = "/Admin/Webconfig"
+                //}
+                //return;
+            });
+    </script>
+
+
+
+
+</div>
+
+
+

@@ -1,0 +1,190 @@
+﻿@model IEnumerable<OsCoreApplication.DataLayer.EFModel.ProjectImage>
+@{
+    ViewBag.Title = "ProjectImages";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="ui form">
+    <div class="content-wrapper">
+        <div class="content box">
+            <div class="ui small breadcrumb tops">
+                <a href="/"><i class="large home teal icon"></i></a>
+                <i class="right chevron icon divider"></i>
+                <div class="active section">Quản lý hình ảnh dự án</div>
+                <input type="hidden" id="ProjectID" value="@ViewBag.ProjectID" />
+            </div>
+            <div class="box-body">
+                <div class="field" style="text-align:right">
+                    <a @*id="btnAddProjectImages"*@ href="/Admin/AddImagesProject?ProjectID=@ViewBag.ProjectID" class="ui primary labeled icon button"><i class="plus icon"></i> Thêm Mới Hình Ảnh </a>
+                </div>
+                <div style='overflow: auto; margin-bottom: 12px;'>
+                    <table class='ui selectable celled table'>
+                        <thead>
+                            <tr>
+                                <th style='text-align: center; width: 50px'>
+                                    STT
+                                </th>
+                                <th style="width:250px">
+                                    HÌNH ẢNH
+                                </th>
+                                <th>
+                                    NGÀY ĐĂNG
+                                </th>
+                                <th class='two wide'>
+                                    CHỨC NĂNG
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count() > 0 && Model.Any())
+                            {
+                                int i = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td style="text-align:center">@i</td>
+                                        <td style="text-align:center"><img src="@item.ImageUrl" style="width:200px; height:auto" /></td>
+                                        <td>@item.DateCreate</td>
+                                        <td style="text-align:center"><a data-id="@item.id" class="ui mini red button del-project-image">Xóa</a></td>
+                                    </tr>
+                                    i++;
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="ui tiny modal" id="popupAddProjectImages">
+        <div class="header">Thêm mới hình ảnh dự án</div>
+        <div class="content">
+            <form>
+                <div class="ui form">
+                    <div class="field">
+                        <label>Chọn hình ảnh banner:</label>
+                        <div style="font-style:italic">(Tối đa: 1MB)</div>
+                        <input type="file" name="fileProjectImage" id="fileProjectImage" accept="image/*" />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="actions">
+            <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Hủy</a>
+            <button id='btnExeUploadProjectImage' type="submit" class='waves-effect waves-light ui green right labeled icon button'><i class='cloud upload icon'></i>Upload</button>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- Popup Delete Banner-->
+    <div class="ui tiny modal" id="popupDelProjectImage">
+        <div class="header">Xác nhận xóa hình ảnh</div>
+        <div class="content">
+            <p>
+                Bạn có chắc chắn xóa hình ảnh này không?
+            </p>
+        </div>
+        <div class="actions">
+            <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Không </a>
+            <a class='waves-effect waves-light ui green right labeled icon button' id="btnExeDelProjectImage"><i class='checkmark icon'></i>Xóa</a>
+        </div>
+    </div>
+
+
+    <script>
+
+        $(".del-project-image").on("click", function () {
+            $('#btnExeDelProjectImage').attr('data-id', $(this).attr("data-id"));
+            ShowModal("#popupDelProjectImage");
+        })
+
+        $("#btnExeDelProjectImage").on("click", function (e) {
+            var _id = $(this).attr("data-id");
+
+            var projectImageID = {
+                id: _id
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/Admin/DeleteProjectImage',
+                dataType: 'json',
+                cache: false,
+                data: projectImageID,
+                success: function (data) {
+                    if (data.rel == 1) {
+                        location.reload();
+                    }
+                    else {
+                        alert("Xóa có lỗi.")
+                    }
+                },
+                error: function () {
+                    alert("Không thể xóa.");
+                }
+            });
+
+        })
+
+        $("#btnAddProjectImages").on("click", function (e) {
+            e.preventDefault();
+            //$('#btnExeDelBanner').attr('data-id', $(this).attr("data-id"));
+            ShowModal("#popupAddProjectImages");
+        })
+
+
+        $("#btnExeUploadProjectImage").on("click", function (e) {
+
+            var projectID = $("#ProjectID").val();
+            var data = new FormData();
+            var files = $("#fileProjectImage").get(0).files;
+            if (files.length > 0) {
+                data.append("HelpSectionImages", files[0]);
+                data.append("ProjectID", projectID);
+            }
+            else {
+                alert("Vui lòng chọn file hình ảnh.");
+                return;
+            }
+
+            $.ajax({
+                url: "/Admin/UploadProjectImage",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function (ret) {
+                    if (ret.rel == 1)
+                        location.reload();
+                    if (ret.rel == -2)
+                        alert("File ảnh quá lớn, vui lòng chọn file ảnh nhỏ hơn 1MB.");
+                    if (ret.rel == -1)
+                        alert("Upload ảnh bị lỗi. Vui lòng thử lại sau.");
+                    if (ret.rel == 0)
+                        alert("Không thể lưu thông tin banner.");
+                },
+                error: function () {
+                    alert("Thêm mới banner lỗi. Thử lại sau.");
+                }
+            });
+        })
+
+
+
+
+
+    </script>
+
+</div>
+
+
+

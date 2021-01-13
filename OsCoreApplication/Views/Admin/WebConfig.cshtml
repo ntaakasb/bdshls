@@ -1,0 +1,164 @@
+﻿@model IEnumerable<OsCoreApplication.ViewModel.Models.ConfigWebModels>
+@{
+    ViewBag.Title = "WebConfig";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="ui form">
+    <div class="content-wrapper">
+        <div class="content box">
+            <div class="ui small breadcrumb tops">
+                <a href="/"><i class="large home teal icon"></i></a>
+                <i class="right chevron icon divider"></i>
+                <div class="active section">Tùy chỉnh Website</div>
+            </div>
+
+            <div class="box-body">
+                <div style='overflow: auto; margin-bottom: 12px;'>
+                    <table class='ui selectable celled table'>
+                        <thead>
+                            <tr>
+                                <th style="text-align: center; width: 50px">
+                                    STT
+                                </th>
+                                <th style="width:20%">TÊN</th>
+                                <th>GIÁ TRỊ</th>
+                                <th class='two wide'>CHỨC NĂNG</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Count() > 0 && Model.Any())
+                            {
+                                int i = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td style="text-align: center">@i</td>
+                                        <td style="color:blue">@item.NameConfig</td>
+
+                                        <td>
+                                            @if (item.KeyConfig == "CONTENT_ABOUT")
+                                            {
+                                                <a href="/Admin/EditContentAbout" class="ui primary mini button">Xem</a>
+                                            }
+                                            else
+                                            {
+                                                @item.ValueConfig
+                                            }
+
+                                        </td>
+                                        
+                                        <td style="text-align:center">
+                                            @if (item.KeyConfig == "CONTENT_ABOUT")
+                                            {
+                                                <a href="/Admin/EditContentAbout" class="ui primary mini button">Sửa</a>
+                                            }
+                                            else
+                                            {
+                                                <a data-key="@item.id" data-name="@item.NameConfig" data-value="@item.ValueConfig" class="ui primary mini button edit-config">Sửa</a>
+                                            }
+                                        </td>
+                                        
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Popup key word-->
+    <div class="ui tiny modal" id="popupEditConfig">
+        <div class="header">Cập Nhật Thông Tin</div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <label id="lbConfig"></label>
+                    <textarea id="txtValueConfig" style="height: 20px"> </textarea>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Đóng </a>
+            <a id='btnExeUpdateConfig' class='waves-effect waves-light ui green right labeled icon button'><i class='checkmark icon'></i>Lưu </a>
+        </div>
+    </div>
+
+
+
+    <div class="ui tiny modal" id="divXoaBaiHat">
+        <div class="header">Xác nhận xóa sản phẩm</div>
+        <div class="content">
+            <p>
+                Bạn có chắc chắn xóa sản phẩm này không?
+            </p>
+        </div>
+        <div class="actions">
+            <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Không </a>
+            <a class='waves-effect waves-light ui green right labeled icon button' id="btXoaBaiHat"><i class='checkmark icon'></i>Xóa </a>
+        </div>
+    </div>
+
+    <script>
+        $(".edit-config").on("click", function (e) {
+            e.preventDefault();
+            $("#lbConfig").html($(this).attr("data-name"));
+            $("#txtValueConfig").val($(this).attr("data-value"));
+            $('#btnExeUpdateConfig').attr('data-key', $(this).attr("data-key"));
+            ShowModal("#popupEditConfig");
+        })
+
+        $("#btnExeUpdateConfig").on("click", function (e) {  
+            var _valueConfig = $("#txtValueConfig").val();
+
+            if ($.trim(_valueConfig) != "") {
+                var _keyConfig = $(this).attr("data-key");             
+
+                var congfig = {
+                    keyConfig: _keyConfig,
+                    valueConfig: _valueConfig
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Admin/UpdateConfig',
+                    dataType: 'json',
+                    cache: false,
+                    data: congfig,
+                    success: function (data) {
+                        if (data.rel == 1) {
+                            location.reload();
+                        }
+                        else {
+                            alert("Cập nhật lỗi.")
+                        }
+                    },
+                    error: function () {
+                        alert("Không thể cập nhật.");
+                    }
+                });      
+            }
+            else
+            {
+                $("#txtValueConfig").focus();
+                $("#txtValueConfig").notify(
+                    "Dữ liệu không được để trống.",
+                    {
+                        position: "bottom",
+                        className: "error",
+                        autoHideDelay: 5000,
+                    }
+                );
+            }   
+        })
+
+    </script>
+
+
+
+
+</div>
+

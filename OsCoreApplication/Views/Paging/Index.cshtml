@@ -1,0 +1,70 @@
+﻿@model OsCoreApplication.ViewModel.Models.Paging
+@{
+    Layout = null;
+}
+@if (Model != null)
+{
+    <a id="page_fist" href="@Model.Url@Model.Node[0]" class="btn-alt small margin-null paging">Đầu</a>
+
+    if (Model.Node[1] != "")
+    {
+        if (Model.Page.ToString() == Model.Node[1])
+        {
+            <a id="page_1" href="@Model.Url@Model.Node[1]" class="btn-alt small active margin-null paging">@Model.Node[1]</a>
+        }
+        else
+        {
+            <a id="page_1" href="@Model.Url@Model.Node[1]" class="btn-alt small margin-null paging">@Model.Node[1]</a>
+        }
+    }
+
+    if (Model.Node[2] != "")
+    {
+        if (Model.Page.ToString() == Model.Node[2])
+        {
+            <a id="page_2" href="@Model.Url@Model.Node[2]" class="btn-alt small active margin-null paging">@Model.Node[2]</a>
+        }
+        else
+        {
+            <a id="page_2" href="@Model.Url@Model.Node[2]" class="btn-alt small margin-null paging">@Model.Node[2]</a>
+        }
+    }
+
+    if (Model.Node[3] != "")
+    {
+        if (Model.Page.ToString() == Model.Node[3])
+        {
+            <a id="page_3" href="@Model.Url@Model.Node[3]" class="btn-alt small active margin-null paging">@Model.Node[3]</a>
+        }
+        else
+        {
+            <a id="page_3" href="@Model.Url@Model.Node[3]" class="btn-alt small margin-null paging">@Model.Node[3]</a>
+        }
+    }
+
+    if (Model.Node[4] != "")
+    {
+        if (Model.Page.ToString() == Model.Node[4])
+        {
+            <a id="page_4" href="@Model.Url@Model.Node[4]" class="btn-alt small active margin-null paging">@Model.Node[4]</a>
+        }
+        else
+        {
+            <a id="page_4" href="@Model.Url@Model.Node[4]" class="btn-alt small margin-null paging">@Model.Node[4]</a>
+        }
+    }
+
+    if (Model.Node[5] != "")
+    {
+        if (Model.Page.ToString() == Model.Node[5])
+        {
+            <a id="page_5" href="@Model.Url@Model.Node[5]" class="btn-alt small active margin-null paging">@Model.Node[5]</a>
+        }
+        else
+        {
+            <a id="page_5" href="@Model.Url@Model.Node[5]" class="btn-alt small margin-null paging">@Model.Node[5]</a>
+        }
+    }
+
+    <a id="page_last" href="@Model.Url@Model.Node[6]" class="btn-alt small margin-null paging">Cuối</a>
+}

@@ -1,0 +1,330 @@
+﻿@using OsCoreApplication.ViewModel.Models
+@model IEnumerable<OsCoreApplication.ViewModel.Models.ProjectModels>
+@{
+    ViewBag.Title = "ProjectManage";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Paging paging = ViewBag.Paging as Paging;
+}
+
+
+    <div class="ui form">
+        <div class="content-wrapper">
+            <div class="content box">
+                <div class="ui small breadcrumb tops">
+                    <a href="/"><i class="large home teal icon"></i></a>
+                    <i class="right chevron icon divider"></i>
+                    <div class="active section">Quản lý dự án</div>
+                </div>
+                <div class="box-body">
+                    <div class="field" style="text-align:right">
+                        <a id="btnAddProject" href="/Admin/AddProject" class="ui primary labeled icon button"><i class="plus icon"></i> Thêm Mới Dự Án </a>
+                    </div>
+                    <div style='overflow: auto; margin-bottom: 12px;'>
+                        <table class='ui selectable celled table'>
+                            <thead>
+                                <tr>
+                                    <th style='text-align: center; width: 50px'>
+                                        STT
+                                    </th>
+                                    <th style="width:100px">
+                                        ĐÃ BÁN?
+                                    </th>
+                                    <th style="width:180px">
+                                        HÌNH ẢNH
+                                    </th>
+                                    <th>
+                                        TÊN DỰ ÁN
+                                    </th>
+                                    <th>
+                                        ĐỊA ĐIỂM
+                                    </th>
+                                    <th>
+                                        PHÁP LÝ
+                                    </th>
+                                    <th>
+                                        NỔI BẬT?
+                                    </th>
+                                    <th>
+                                        HIỂN THỊ?
+                                    </th>
+                                    <th>
+                                        ẢNH DỰ ÁN
+                                    </th>
+                                    <th class='two wide'>
+                                        CHỨC NĂNG
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Count() > 0 && Model.Any())
+                                {
+                                    int i = 1;
+                                    foreach (var item in Model)
+                                    {
+                                        string isCk = "";
+                                        if (item.IsSaled == true)
+                                        { isCk = "checked"; }
+
+                                        string isCkHightLight = "";
+                                        if (item.IsHighlights == true)
+                                        { isCkHightLight = "checked"; }
+
+                                        string isCkShow = "";
+                                        if (item.IsShow == true)
+                                        { isCkShow = "checked"; }
+
+                                <tr>
+                                    <td style="text-align:center">@i</td>
+                                    <td style="text-align:center">
+                                        <div class="ui checkbox issaled" style="margin-right:-7px">
+                                            <input data-id="@item.id" type="checkbox" @isCk />
+                                            <label style='cursor:pointer'></label>
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center"><img src="@item.Thumbnail" style="width:150px; height:150px; " /></td>
+                                    <td>@item.ProjectName</td>
+                                    <td>@item.Address</td>
+                                    <td>@item.Juridical</td>
+                                    <td style="text-align:center">
+                                        <div class="ui checkbox ishightlight" style="margin-right:-7px">
+                                            <input data-id="@item.id" type="checkbox" @isCkHightLight />
+                                            <label style='cursor:pointer'></label>
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center">
+                                        <div class="ui checkbox isshow" style="margin-right:-7px">
+                                            <input data-id="@item.id" type="checkbox" @isCkShow />
+                                            <label style='cursor:pointer'></label>
+                                        </div>
+                                    </td>
+
+                                    <td style="text-align:center">
+                                     
+                                        <a href="/Admin/ProjectImages?ProjectID=@item.id" class="ui mini green button">Quản lý</a>
+                                        
+                                    </td>
+
+                                    <td style="text-align:center">
+                                        @*<a href="../Project/ProjectDetail/@item.id" target="_blank" class="ui mini green button">Xem</a>*@
+                     
+                                        <a href="../Admin/EditProject?ProjectID=@item.id" class="ui mini blue button">Sửa</a>
+                                        <a data-id="@item.id" class="ui mini red button del-project">Xóa</a>
+                                    </td>
+                                </tr>
+                                        i++;
+                                    }
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="text-align: center;">
+                        @{Html.RenderAction("Index", "Paging", new { p = paging }); }
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div class="ui modal" id="popupAddProject">
+
+            <div class="header">Thêm mới dự án</div>
+            <div class="content">
+                @*<form>
+                    <div class="ui form">
+                        <div class="field">
+                            <label>Chọn hình ảnh banner:</label>
+                            <div style="font-style:italic">(Kích thước đề nghị: 840 x 360. Tối đa: 1MB)</div>
+                            <input type="file" name="fileBanner" id="fileBanner" accept="image/*" />
+                        </div>
+                    </div>
+                </form>*@
+                <div class="ui form">
+
+
+                    <label>Nội dung mô tả:</label>
+                    @*<div id="editor">
+                        <h1>Hello world!</h1>
+                        <p>I'm an instance of <a href="https://ckeditor.com">CKEditor</a>.</p>
+                    </div>*@
+
+                </div>
+
+            </div>
+            <div class="actions">
+                <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Hủy</a>
+                <button id='btnExeUploadBanner' type="submit" class='waves-effect waves-light ui green right labeled icon button'><i class='cloud upload icon'></i>Upload</button>
+            </div>
+        </div>
+
+
+
+
+
+
+        <!-- Popup Delete News-->
+        <div class="ui tiny modal" id="popupDelProject">
+            <div class="header">Xác nhận xóa dự án</div>
+            <div class="content">
+                <p>
+                    Bạn có chắc chắn xóa dự án này không?
+                </p>
+            </div>
+            <div class="actions">
+                <a class='waves-effect waves-light negative ui cancel right labeled icon button'><i class='remove icon'></i>Không</a>
+                <a class='waves-effect waves-light ui green right labeled icon button' id="btnExeDelproject"><i class='checkmark icon'></i>Xóa</a>
+            </div>
+        </div>
+
+        <script>
+
+            $(".del-project").on("click", function () {
+                $('#btnExeDelproject').attr('data-id', $(this).attr("data-id"));
+                ShowModal("#popupDelProject");
+            })
+
+            $("#btnExeDelproject").on("click", function (e) {
+                var _id = $(this).attr("data-id");
+                var projectID = {
+                    id: _id
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Admin/DeleteProject',
+                    dataType: 'json',
+                    cache: false,
+                    data: projectID,
+                    success: function (data) {
+                        if (data.rel == 1) {
+                            location.reload();
+                        }
+                        else {
+                            alert("Xóa có lỗi.")
+                        }
+                    },
+                    error: function () {
+                        alert("Không thể xóa.");
+                    }
+                });
+            })
+
+
+            $('.checkbox.issaled').checkbox(
+                {
+                    onChecked: function () {
+                       
+                        UpdateSaled($(this).attr('data-id'), "1")
+                    },
+                    onUnchecked: function () {
+                     
+                        UpdateSaled($(this).attr('data-id'), "0")
+                    },
+
+                });
+
+
+            function UpdateSaled(ids, vals) {
+                var DataValue = { ids: ids, vals: vals };
+                console.log(DataValue);
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/UpdateSaled",
+                    dataType: "json",
+                    cache: false,
+                    data: DataValue,            
+                    success: function (datas) {
+                        //if (datas.d == "true") {
+                        //    console.log("true")
+                        //}
+                    },
+                    error: function () { }
+                });
+            }
+
+
+
+            $('.checkbox.ishightlight').checkbox(
+                {
+                    onChecked: function () {
+
+                        UpdateHightLight($(this).attr('data-id'), "1")
+                    },
+                    onUnchecked: function () {
+
+                        UpdateHightLight($(this).attr('data-id'), "0")
+                    },
+
+                });
+
+
+            function UpdateHightLight(ids, vals) {
+                var DataValue = { ids: ids, vals: vals };
+                console.log(DataValue);
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/UpdateHightLight",
+                    dataType: "json",
+                    cache: false,
+                    data: DataValue,
+                    success: function (datas) {
+                        //if (datas.d == "true") {
+                        //    console.log("true")
+                        //}
+                    },
+                    error: function () { }
+                });
+            }
+
+
+            $('.checkbox.isshow').checkbox(
+                {
+                    onChecked: function () {
+
+                        UpdateShow($(this).attr('data-id'), "1")
+                    },
+                    onUnchecked: function () {
+
+                        UpdateShow($(this).attr('data-id'), "0")
+                    },
+
+                });
+
+
+            function UpdateShow(ids, vals) {
+                var DataValue = { ids: ids, vals: vals };
+                console.log(DataValue);
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/UpdateShow",
+                    dataType: "json",
+                    cache: false,
+                    data: DataValue,
+                    success: function (datas) {
+                        //if (datas.d == "true") {
+                        //    console.log("true")
+                        //}
+                    },
+                    error: function () { }
+                });
+            }
+
+
+
+
+        </script>
+
+
+
+
+
+
+
+
+    </div>
+
+

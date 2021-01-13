@@ -1,0 +1,47 @@
+﻿@using OsCoreApplication.ViewModel.Models
+@model IEnumerable<OsCoreApplication.ViewModel.Models.ProjectModels>
+@{
+    ViewBag.Title = "Danh sách dự án";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Paging paging = ViewBag.Paging as Paging;
+}
+
+<div id="home-wrap" class="content-section fullpage-wrap">
+    <!--  List Project  -->
+    <div id="team">
+        <div class="container text">
+            <div class="row">
+                <!--  List Project Header -->
+                <div class="col-md-12 padding-onlybottom-md text-center">
+                    <h2 class="margin-bottom-null title line center">DỰ ÁN</h2>
+                    <p class="heading center grey margin-bottom-null">Những dự án tiềm năng của BĐS Hoàng Liên Sơn</p>
+                </div>
+                <!--  END Project Header -->
+                <!--  Item -->
+                @{
+                    int i = 0;
+                    foreach (var item in Model)
+                    {
+                        if (i != 0 && i % 4 == 0)
+                        {
+                            @Html.Raw("</div><div class='row'>");
+                        }
+                        i++;
+                        @Html.Partial("~/Views/Shared/Path/_itemProductLargeImage.cshtml", item)
+                    }
+                }
+                <!--  Item -->
+
+            </div>
+
+            <div style="text-align: center;">
+                @{Html.RenderAction("Index", "Paging", new { p = paging }); }
+            </div>
+
+        </div>
+    </div>
+    <!--  END Lits Project  -->
+    <!-- Project Heightlights  -->
+    @{Html.RenderAction("ProjectHeightlights", "Project"); }
+    <!--  END Project Heightlights  -->
+</div>

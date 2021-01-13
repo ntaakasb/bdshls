@@ -1,0 +1,220 @@
+﻿@using OsCoreApplication.ViewModel.Models
+@model OsCoreApplication.ViewModel.Models.ProjectModels
+@{
+    ViewBag.Title = "EditProject";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="ui form">
+    <div class="content-wrapper">
+        <div class="content box">
+            <div class="ui small breadcrumb tops">
+                <a href="/"><i class="large home teal icon"></i></a>
+                <i class="right chevron icon divider"></i>
+                <div class="active section">Quản lý dự án</div>
+                <i class="right chevron icon divider"></i>
+                <div class="active section">Chỉnh sửa dự án</div>
+                <input id="ProjectId" type="hidden" value="@Model.id"/>
+            </div>
+            <div class="box-body">
+                <div class="field">
+                    <label>Tên dự án: </label>
+                    <input type="text" id="ProjectName" name="ProjectName" value="@Model.ProjectName" placeholder="VD: ĐẤT NỀN DĨ AN">
+                </div>
+                <div class="field">
+                    <div class="two fields">
+                        <div class="field">
+                            <label>Loại dự án: </label>
+                            <select name="ProjectCategory" id="ProjectCategory">
+                                <option value="1">Dự án Đông Bình Dương</option>
+                                <option value="2">BĐS cần bán</option>
+                                <option value="3">BĐS cho thuê</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Địa điểm: </label>
+                            <input type="text" id="ProjectAddress" name="ProjectAddress" value="@Model.Address" placeholder="VD: Bình Dương">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="two fields">
+                        <div class="field" style="margin-bottom:10px;">
+                            <label>Diện tích: </label>
+                            <input type="text" id="ProjectArea" name="ProjectArea" value="@Model.Acreage" placeholder="VD: 1000 m2">
+                        </div>
+
+                        <div class="field" style="margin-bottom:10px;">
+                            <label>Hướng: </label>
+                            <input type="text" id="ProjectDirection" name="ProjectDirection" value="@Model.Direction" placeholder="VD: Đông Bắc">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="two fields">
+                        <div class="field" style="margin-bottom:10px;">
+                            <label>Chiều dài: </label>
+                            <input type="text" id="ProjectWidth" name="ProjectWidth" value="@Model.Width" placeholder="VD: 450 m">
+                        </div>
+                        <div class="field" style="margin-bottom:10px;">
+                            <label>Chiều rộng: </label>
+                            <input type="text" id="ProjectHeight" name="ProjectHeight" value="@Model.Height" placeholder="VD: 500 m">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="two fields">
+                        <div class="field" style="margin-bottom:10px;">
+                            <label>Giá tham khảo: </label>
+                            <input type="text" id="ProjectPrice" name="ProjectPrice" value="@Model.Price" placeholder="VD: 500 tr - 1 tỷ">
+                        </div>
+
+                        <div class="field" style="margin-bottom:10px;">
+                            <label>Pháp lý: </label>
+                            <input type="text" id="ProjectJuridical" name="ProjectJuridical" value="@Model.Juridical" placeholder="VD: Sổ đỏ / Sổ hồng">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Mô tả chi tiết dự án: </label>
+                    <textarea id="ProjectContent" name="ProjectContent">@Model.Description</textarea>
+                </div>
+                <div class="field" style="text-align:center">
+                    <a id="btnCancelAddProject" class="ui red labeled icon button"><i class="x icon icon"></i> Hủy bỏ </a>
+                    <a id="btnExeEditProject" class="ui primary labeled icon button"><i class="save icon"></i> Cập nhật </a>
+                </div>
+            </div>                       
+        </div>
+    </div>
+ 
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/ckfinder/ckfinder.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('ProjectContent', {
+                language: 'vi',
+                height: '350'
+            });
+            CKFinder.setupCKEditor(null, '/ckfinder');
+
+            var idType = '@Model.idType';
+            $("#ProjectCategory").val(idType);
+
+        });
+
+        //function ShowImage(input) {
+        //    if (input.files && input.files[0]) {
+        //        var reader = new FileReader();
+        //        reader.onload = function (e) {
+        //            $('#ThumbNews').attr('src', e.target.result)
+        //        };
+        //        reader.readAsDataURL(input.files[0]);
+        //    }
+        //    else {
+        //        $('#ThumbNews').attr('src', '/images/Bg.png')
+        //    }
+        //}
+
+
+
+        $("#btnExeEditProject").on("click", function (e) {
+
+            var ProjectID = $("#ProjectId").val();
+            var ProjectName = $("#ProjectName").val();
+            var ProjectCategory = $("#ProjectCategory").val();
+            var ProjectAddress = $("#ProjectAddress").val();
+            var ProjectWidth = $("#ProjectWidth").val();
+            var ProjectArea = $("#ProjectArea").val();
+            var ProjectHeight = $("#ProjectArea").val();
+            var ProjectDirection = $("#ProjectDirection").val();
+            var ProjectPrice = $("#ProjectPrice").val();
+            var ProjectJuridical = $("#ProjectJuridical").val();
+
+            if ($.trim(ProjectName) == "") {
+                alert("Tên dự án không được để trống.")
+                $("#ProjectName").focus();
+                return;
+            }
+
+            if ($.trim(ProjectCategory) == "") {
+                alert("Vui lòng chọn danh mục dự án.")
+                $("#ProjectCategory").focus();
+                return;
+            }
+
+            if ($.trim(ProjectAddress) == "") {
+                alert("Địa chỉ không được để trống.")
+                $("#ProjectAddress").focus();
+                return;
+            }
+
+            //var data = new FormData();
+            //var files = $("#FileThumbNews").get(0).files;
+            //if (files.length > 0) {
+            //    data.append("HelpSectionImages", files[0]);
+            //}
+            //else {
+            //    alert("Vui lòng chọn file hình ảnh.");
+            //    return;
+            //}
+
+            var ProjectContent = CKEDITOR.instances['ProjectContent'].getData();
+            if ($.trim(ProjectContent) == "") {
+                alert("Vui lòng nhập mô tả dự án.");
+                return;
+            }
+            var project = {
+                ProjectID: ProjectID,
+                ProjectName: ProjectName,
+                ProjectCategory: ProjectCategory,
+                ProjectAddress: ProjectAddress,
+                ProjectWidth: ProjectWidth,
+                ProjectArea: ProjectArea,
+                ProjectHeight: ProjectHeight,
+                ProjectDirection: ProjectDirection,
+                ProjectPrice: ProjectPrice,
+                ProjectJuridical: ProjectJuridical,
+                ProjectContent: ProjectContent
+                
+            }
+            EditProject(project);
+       
+        });
+
+        function EditProject(dataProject) {
+            if (dataProject != null) {
+                $.ajax({
+                    url: "/Admin/EditProject",
+                    type: "POST",
+                    cache: false,
+                    data: dataProject,
+                    success: function (ret) {
+                        if (ret.rel == 1)
+                            window.location.href = "/Admin/ProjectManage";
+                        else {
+                            alert("Cập nhật dự án không thành công.");
+                            $("#btnExeEditProject").removeClass("loading");
+                            $("#btnExeEditProject").prop('disabled', false);
+                        }
+                    },
+                    error: function () {
+                        alert("Cập nhật dự án bị lỗi. Thử lại sau.");
+                        $("#btnExeEditProject").removeClass("loading");
+                        $("#btnExeEditProject").prop('disabled', false);
+                    }
+                });
+            }
+        }
+        $("#btnCancelAddProject").on("click", function () {
+            //var c = confirm("Bạn có chắc chắn muốn hủy bỏ không?");
+            //if (c == true) {
+                window.location.href = "/Admin/ProjectManage"
+            //}
+            //return;
+        });
+    </script>
+
+</div>

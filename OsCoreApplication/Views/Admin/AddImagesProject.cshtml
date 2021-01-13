@@ -1,0 +1,212 @@
+﻿
+@{
+    ViewBag.Title = "AddImagesProject";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="ui form">
+    <div class="content-wrapper">
+        <div class="content box">
+            <div class="ui small breadcrumb tops">
+                <a href="/"><i class="large home teal icon"></i></a>
+                <i class="right chevron icon divider"></i>
+                <div class="active section">Import hình ảnh</div>
+            </div>
+            <div class="box-body">
+                @using (Html.BeginForm("AddImagesProject", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" id="ProjectID" name="ProjectID" value="@ViewBag.ProjectID" />
+                    <div class="field">
+                        <label>Hình ảnh: <span style="font-weight:normal"><i>(Chọn nhiều hình ảnh)</i></span> </label>
+                        <input type="file" id="FileImages" name="FileImages" multiple="multiple" accept="image/*" />
+                    </div>
+
+                    <style>
+                        #dvShowImages img {
+                            padding: 10px;
+                        }
+                    </style>
+
+                    <div id="dvShowImages" style="text-align:center; margin-top:10px; margin-bottom:10px; padding:10px; background-color:white; border-radius:4px">
+                        Không có hình ảnh được chọn
+                        @*<img id="ThumbNews" style="width:360px; height:240px; border-radius:5px" src="~/images/no-image-box.png" />*@
+                    </div>
+
+                    <div class="field" style="text-align:center">
+                        <button @*id="btnExeImportImage"*@ type="submit" class="ui primary labeled icon button"><i class="cloud upload icon"></i> Upload hình ảnh </button>
+                    </div>
+
+                    <div style="padding:10px; color:limegreen; text-align:center">
+                        @ViewBag.UploadStatus
+                    </div>
+
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#FileImages").change(function () {
+            var ShowImages = $("#dvShowImages");
+            ShowImages.empty();
+            if ($(this)[0].files.length > 0) {
+                //console.log($(this)[0].files.length > 0);
+                $($(this)[0].files).each(function () {
+                    var file = $(this);
+                    var reader = new FileReader();
+                    console.log(file);
+                    reader.onload = function (e) {
+
+                        var img = $("<img />");
+                        img.attr("style", "width:150px; height:150px");
+                        img.attr("src", e.target.result);
+                        ShowImages.append(img);
+                    };
+                    reader.readAsDataURL(file[0]);
+                })
+            }
+            else {
+                ShowImages.append("Không có hình ảnh được chọn");
+            }
+        });
+    });
+
+
+
+    $("#btnExeImportImage").on("click", function (e) {
+
+        var data = new FormData();
+        var files = $("#FileImages").get(0).files;
+        console.log(files);
+
+        if (files.length > 0) {
+            //data.append("HelpSectionImages", files[0]);
+            $(files).each(function () {
+                var file = $(this);
+                //console.log(file);
+                data.append("files[]", file);
+
+            });
+
+            console.log(data);
+
+
+
+            $.ajax({
+                url: "/Admin/UploadImportImages",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                data: data,
+                error: function () {
+                    alert("Upload ảnh đại diện lỗi. Thử lại sau.");
+                    $("#btnExeAddProject").removeClass("loading");
+                    $("#btnExeAddProject").prop('disabled', false);
+                }
+            }).done(function (ret) {
+                //if (ret.rel == 1) {
+                //    $("#UrlThubNews").val(ret.urlThumbProject)
+
+                //    var project = {
+                //        ProjectName: ProjectName,
+                //        ProjectCategory: ProjectCategory,
+                //        ProjectAddress: ProjectAddress,
+                //        ProjectType: ProjectType,
+                //        ProjectWidth: ProjectWidth,
+                //        ProjectArea: ProjectArea,
+                //        ProjectHeight: ProjectHeight,
+                //        ProjectDirection: ProjectDirection,
+                //        ProjectPrice: ProjectPrice,
+                //        ProjectJuridical: ProjectJuridical,
+                //        IsShow: IsShow,
+                //        IsHightLight: IsHightLight,
+                //        ProjectContent: ProjectContent,
+                //        UrlThumbProject: ret.urlThumbProject
+                //    }
+
+                //    AddProject(project);
+                //    //console.log(news);
+                //}
+                //if (ret.rel == -2) {
+                //    alert("File ảnh quá lớn, vui lòng chọn file ảnh nhỏ hơn 1MB.");
+                //    $("#btnExeAddProject").removeClass("loading");
+                //    $("#btnExeAddProject").prop('disabled', false);
+                //}
+                //if (ret.rel == -1) {
+                //    alert("Upload ảnh bị lỗi. Vui lòng thử lại sau.");
+                //    $("#btnExeAddProject").removeClass("loading");
+                //    $("#btnExeAddProject").prop('disabled', false);
+                //}
+                //if (ret.rel == 0) {
+                //    alert("Không thể lưu dự án mới.");
+                //    $("#btnExeAddProject").removeClass("loading");
+                //    $("#btnExeAddProject").prop('disabled', false);
+                //}
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+        else {
+            alert("Vui lòng chọn file hình ảnh.");
+            return;
+        }
+
+
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function ShowImage(input) {
+        if (input.files) {
+
+
+
+        }
+        else {
+            $('#ThumbNews').attr('src', '/images/Bg.png')
+        }
+    }
+
+
+</script>
+

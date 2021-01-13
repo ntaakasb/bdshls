@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - BĐS Hoàng Liên Sơn</title>
+    @RenderSection("meta", required: false)
+    @*@Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")*@
+
+
+    <link href="~/Css/style.css" rel="stylesheet" />
+
+
+    <link rel="stylesheet" href="~/template/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/template/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="~/template/css/fontAwesome.css">
+    <link rel="stylesheet" href="~/template/css/hero-slider.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css">
+    <link href="~/template/sliderengine/amazingslider-1.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/template/css/style.css">
+    <link href="~/template/css/style-dev.css" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+    <script src="~/template/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+
+    <script>
+        function goHome() {
+            // window.location = "/";
+            alert("xx");
+        }
+    </script>
+
+    <!-- Custom CSS Site-->
+    @*<link rel="stylesheet" href="~/Content/Site.css" />*@
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    @*<script src="~/assets/js/jquery.min.js"></script>*@
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+<body>
+
+
+    <div class="wrap">
+        <header id="header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <button id="primary-nav-button" type="button">Menu</button>
+
+                        <div class="logo" onclick="goHome()" style="cursor:pointer">
+                            <img src="~/template/img/logo.png" alt="Logo" />
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row slogan">
+                            <img src="~/template/img/slogan.png" />
+                        </div>
+                        <div class="row">
+                            <nav id="primary-nav" class="dropdown cf">
+                                <ul class="dropdown menu">
+                                    <li class='active'>
+                                        @Html.ActionLink("Trang chủ", "Index", "Home")
+                                    </li>
+                                    <li><a href="../bat-dong-san-dong-binh-duong">Đông Bình Dương</a></li>
+
+
+
+                                    <li><a href="../bat-dong-san-can-ban">Cần Bán</a></li>
+                                    <li><a href="../bat-dong-san-cho-thue">Cho Thuê</a></li>
+                                    <li>
+                                        @Html.ActionLink("Tin tức", "Index", "News")
+                                    </li>
+
+                                    <li>
+                                        @Html.ActionLink("Liên Hệ", "Contact", "Home")
+                                    </li>
+
+
+
+                                </ul>
+                            </nav><!-- / #primary-nav -->
+                        </div>
+                    </div>
+                    <div class="col-md-1 hotline-header">
+                        <img src="~/template/img/hotline.png" />
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <!-- Insert to your webpage where you want to display the slider -->
+                <div class="amazingslider-wrapper" id="amazingslider-wrapper-1" style="display:block;position:relative;max-width:100%;margin:0 auto;">
+                    <div class="amazingslider" id="amazingslider-1" style="display:block;position:relative;margin:0 auto;">
+                        <ul class="amazingslider-slides" style="display:none;">
+                            @{
+                                for (int i = 1; i < 5; i++)
+                                {
+                                    <li><img src="~/template/img/banner@(i).jpg"></li>
+
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <!-- End of body section HTML codes -->
+            </div>
+        </header>
+
+    </div>
+
+
+
+    @RenderBody()
+
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="about-veno">
+                        <div class="logo">
+                            <img src="~/template/img/logo.png" alt="Venue Logo">
+                        </div>
+                        <p>BĐS Hoàng Liên Sơn, một chữ Tín - vạn niềm Tin.</p>
+                        <ul class="social-icons">
+                            <li>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="useful-links">
+                        <div class="footer-heading">
+                            <h4>Giới thiệu</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul>
+                                    <li>@Html.ActionLink("Dự Án", "Index", "Project")</li>
+                                    <li>@Html.ActionLink("Tin tức", "Index", "News")</li>
+                                    <li>@Html.ActionLink("Liên Hệ", "Contact", "Home")</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul>
+                                    <li><a href="#">Đất nền đông bình dương</a></li>
+                                    <li><a href="#">Đất sổ đỏ, sổ hồng</a></li>
+                                    <li><a href="#">Nhà, nhà xưởng cho thuê</a></li>
+                                    <li><a href="#">Đất nền, đất xưởng</a></li>
+                                    <li><a href="#">Đất dự án khác</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="contact-info">
+                        <div class="footer-heading">
+                            <h4>Thông tin liên hệ</h4>
+                        </div>
+                        <ul>
+                            @{Html.RenderAction("Index", "InfoFooter"); }
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script>
+    @*<script>window.jQuery || document.write('<script src="/template/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>*@
+
+    <script src="~/template/js/vendor/bootstrap.min.js"></script>
+
+    <script src="~/template/js/datepicker.js"></script>
+    <script src="~/template/js/plugins.js"></script>
+    <script src="~/template/sliderengine/jquery.js"></script>
+    <script src="~/template/sliderengine/amazingslider.js"></script>
+    <script src="~/template/sliderengine/initslider-1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="~/template/js/main.js"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

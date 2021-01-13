@@ -1,0 +1,210 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>ADMIN WEBSITE BĐS HOÀNG LIÊN SƠN</title>
+    <link rel="shortcut icon" href="~/Images/LogoDefual.png" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <link href="~/Css/style.css" rel="stylesheet" />
+
+    <style>
+        #dvLogo {
+            text-align: center;
+        }
+
+        #imgLogo {
+            padding-top: 40px;
+            width: 120px;
+            height: auto;
+        }
+
+        #dvLogin {
+            padding: 30px;
+            float: none;
+            width: 380px;
+            background: #fff;
+            margin: 30px auto;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,.2);
+            display: block;
+        }
+
+        #lbLogin {
+            font-weight: bold;
+            font-size: 20px;
+            text-align: center;
+            color: #44566c;
+            margin: 0 0 20px;
+        }
+
+        .RowLogin {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .InputLogin {
+            font-family: HLSRoboto;
+            font-size: 16px;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            color: #495057;
+            background-color: #fff;
+            border: 1px solid #ebedf2;
+            border-radius: 4px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -webkit-transition: border-color .15s ease-out;
+            transition: border-color .15s ease-out;
+        }
+
+        #btnForgetPassWord {
+            color: #6c7293;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        #btnLogin {
+            width: 100%;
+            padding: 20px;
+            font-size: 16px;
+            background: linear-gradient(to right,#34c1c2,#51d5ba);
+            background-color: #3ec8bf;
+            border-color: #47cebd;
+            color: white;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: HLSRoboto;
+        }
+
+        #dvErrorMsg {
+            color: red;
+            text-align: center;
+        }
+
+        #dvOKMsg {
+            color: green;
+            text-align: center;
+        }
+
+        #dvReg {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="Bgs" style="font-family: HLSRoboto">
+
+    <div class="hero-wrap">
+        <div class="circle-bg"></div>
+        <div class="circle-bg-2"></div>
+
+        <div id="dvLogo">
+            <img id="imgLogo" src="~/images/logo.png" />
+        </div>
+        <div id="dvLogin">
+            <div id="lbLogin">Đăng Nhập</div>
+            <form id="frmLogin">
+                <div class="RowLogin">
+                    <input id="user" name="user" type="text" class="InputLogin" placeholder="Tên đăng nhập" />
+                </div>
+                <div class="RowLogin">
+                    <input id="pass" name="pass" type="password" class="InputLogin" placeholder="Mật khẩu" />
+                </div>
+            </form>
+            <div class="RowLogin">
+                <button id="btnLogin">Đăng nhập</button>
+            </div>
+            <div id="dvErrorMsg" class="RowLogin">
+
+            </div>
+            <div id="dvOKMsg" class="RowLogin">
+
+            </div>
+        </div>
+
+    </div>
+    <script src="~/PlugIn/jQuery/jQuery-2.2.0.min.js"></script>
+    <script src="~/css/notify.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".hero-wrap").height($(window).height() - 17);
+        });
+
+        $("#btnLogin").on("click", function (e) {
+            e.preventDefault();
+            var $user = $("#user");
+            var $pass = $("#pass");
+
+            //Check format user
+            if ($.trim($user.val()).length < 6) {
+                $user.focus();
+                $user.notify(
+                    "Tên đăng nhập không hợp lệ",
+                    {
+                        position: "top",
+                        className: "error",
+                        autoHideDelay: 5000,
+                    }
+                );
+                return;
+            }
+
+            //Check format pass
+            if ($pass.val().length < 6) {
+                $pass.focus();
+                $pass.notify(
+                    "Mật khẩu không hợp lệ",
+                    {
+                        position: "top",
+                        className: "error",
+                        autoHideDelay: 5000,
+                    }
+                );
+                return;
+            }
+  
+            $.ajax({
+                type: "POST",
+                url: '/Account/Login',
+                dataType: 'json',
+                cache: false,
+                data: $('#frmLogin').serialize(),
+                success: function (data) {
+                    if (data.rel == 1) {
+                        window.location = "/Admin"
+                    }                  
+                    else
+                    {
+                        $user.focus();
+                        $user.notify(
+                            data.msg,
+                            {
+                                position: "top",
+                                className: "error",
+                                autoHideDelay: 5000,
+                            }
+                        );
+                    }
+                },
+                error: function () {
+                    alert("Không thể đăng nhập. Vui lòng thử lại sau!")
+                }
+            });
+
+        })
+
+    </script>
+
+</body>
+</html>
